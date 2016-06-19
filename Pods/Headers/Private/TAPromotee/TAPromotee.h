@@ -1,0 +1,1 @@
+../../../TAPromotee/Pod/Classes/TAPromotee.h

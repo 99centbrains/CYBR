@@ -1,0 +1,8 @@
+EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$CONFIGURATION_BUILD_DIR/AFNetworking.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/Bolts.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FBSDKCoreKit.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FBSDKLoginKit.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FBSDKShareKit.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FXBlurView.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/JXHTTP.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/PKHUD.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/Spectacles.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SwiftInAppPurchase.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SwiftyJSON.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/TAPromotee.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/TMTumblrSDK.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/TWPhotoPicker.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/iNotify.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "Bolts" -framework "FBSDKCoreKit" -framework "FBSDKLoginKit" -framework "FBSDKShareKit" -framework "FXBlurView" -framework "JXHTTP" -framework "PKHUD" -framework "Spectacles" -framework "SwiftInAppPurchase" -framework "SwiftyJSON" -framework "TAPromotee" -framework "TMTumblrSDK" -framework "TWPhotoPicker" -framework "iNotify"
+OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
+PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods-CybrFotoManip
+PODS_ROOT = ${SRCROOT}/Pods

@@ -1,0 +1,6 @@
+framework module TAPromotee {
+  umbrella header "TAPromotee-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module Pods_CybrFotoManip {
+  umbrella header "Pods-CybrFotoManip-umbrella.h"
+
+  export *
+  module * { export * }
+}

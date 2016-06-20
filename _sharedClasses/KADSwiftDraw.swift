@@ -113,7 +113,7 @@ class EmojiDrawView:UIView {
     
     func renderSticker() -> UIImage?{
         
-        var image:UIImage!
+        var i:UIImage!
         
         if self.subviews.count == 0 {
             return nil
@@ -121,13 +121,13 @@ class EmojiDrawView:UIView {
         
         for layer in self.subviews {
             if let imageView = layer as? UIImageView {
-                image = imageView.image
+                i = imageView.image
             }
             
         }
         clearView()
         
-        return image
+        return i
         
         
     
@@ -298,6 +298,25 @@ class SwiftDrawView: UIView {
     }
     
     
+    func renderSticker() -> UIImage?{
+        
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0.0)
+        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+  
+        clearBitmap()
+        
+        
+      
+
+        return image
+        
+        
+        
+    }
+    
+    
     
     
     
@@ -319,6 +338,7 @@ class SwiftDrawView: UIView {
     optional func paintSelectColor()
     
     optional func paint_popout()
+    optional func emoji_popOut()
     
     optional func paintSelectImage()
     
@@ -348,6 +368,10 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
     
         delegate.paint_popout?()
         
+    }
+    
+    @IBAction func iba_popOutEmoji(){
+        delegate.emoji_popOut!()
     }
     
     @IBAction func iba_toggleEraser(){

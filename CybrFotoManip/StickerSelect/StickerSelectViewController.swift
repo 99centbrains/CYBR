@@ -26,16 +26,16 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     var delegate:StickerSelectDelegate!
     
-    var assetArray = [[[String]]]()
+    var assetArray = [[String]]()
     var assetDIR = [String]()
     var flowLayoutFull = UICollectionViewFlowLayout()
     
-    var lockedPage = true
+    var isLocked = true
     var currentPageID:String!
+    var currentPageIndex = 0
     
-    @IBOutlet var ibo_iboPageControl:UIPageControl!
+    @IBOutlet weak var ibo_scrollView: UIScrollView!
     
-    var currentPage:Int!
     
     override func viewDidLoad() {
         
@@ -63,12 +63,17 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     override func viewWillLayoutSubviews() {
         
-        flowLayoutFull.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        flowLayoutFull.itemSize = ibo_collectionView.frame.size
+        flowLayoutFull = UICollectionViewFlowLayout()
+        flowLayoutFull.sectionInset = UIEdgeInsetsMake(20, 10, 20, 0)
+        flowLayoutFull.itemSize = CGSizeMake(self.view.frame.size.width/3 - 20, self.view.frame.size.width/3 - 20)
+        flowLayoutFull.scrollDirection = .Vertical
         flowLayoutFull.minimumLineSpacing = 0
-        flowLayoutFull.scrollDirection = .Horizontal
+        
         
         ibo_collectionView.setCollectionViewLayout(flowLayoutFull, animated: false)
+        
+        self.ibo_collectionView.setContentOffset(CGPointZero, animated: false)
+        
     }
     
     func loadDirectorys(packDIR:[String]){
@@ -80,22 +85,72 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
             
             let assManager = AssetManager()
             let directory = assManager.getAssetsForDir(str)
-            //print("BLAH ----------------\(str)")
+                        //print("BLAH ----------------\(str)")
             
             var cake = [String]()
-            
-            for section in directory {
+//            
+            for sticker in directory {
                 
-                let stickerFull = assManager.getFullAsset(section, dir: str)
+                let stickerFull = assManager.getFullAsset(sticker, dir: str)
                 //print(stickerFull)
                 cake.append(stickerFull)
-                
             }
             
-            assetArray.append([cake])
+            assetArray.append(cake)
+   
+        }
+        
+       
+        
+        
+    }
+    
+    func setupTabBar(){
+    
+        for var i = 0; i < assetArray.count; i += 1 {
+            
+            print(assetArray[i][0])
+            
+            let scrollSize = ibo_scrollView.frame.size.height
+            let btnSize = CGRectMake(CGFloat(i) * scrollSize, 0, scrollSize, scrollSize)
+            let tabBtn = UIButton(frame: btnSize)
+            tabBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+            tabBtn.addTarget(self, action: #selector(self.iba_toggleTab(_:)), forControlEvents: .TouchUpInside)
+            tabBtn.tag = i
+            tabBtn.contentScaleFactor = 0.5
+            
+            if i == 0 {
+                tabBtn.backgroundColor = UIColor.whiteColor()
+            }
+            
+            let cellImage = UIImage(contentsOfFile: assetArray[i][0])
+            
+            tabBtn.setImage(cellImage, forState: .Normal)
+            
+            self.ibo_scrollView.addSubview(tabBtn)
             
         }
         
+        ibo_scrollView.contentSize = CGSizeMake(ibo_scrollView.frame.size.height * CGFloat(assetArray.count), ibo_scrollView.frame.size.height)
+//        ibo_scrollView.layer.shadowOffset = CGSizeMake(0, 2)
+//        ibo_scrollView.layer.shadowColor = UIColor.blackColor().CGColor
+//        ibo_scrollView.layer.shadowOpacity = 0.5
+//        ibo_scrollView.layer.shadowRadius = 2
+    }
+    
+    func iba_toggleTab(sender:UIButton){
+        
+        for btn in ibo_scrollView.subviews{
+            
+            btn.backgroundColor = UIColor.clearColor()
+        }
+        
+        sender.backgroundColor = UIColor.whiteColor()
+        print(assetDIR[sender.tag])
+        currentPageIndex = sender.tag
+        ibo_collectionView.reloadData()
+        
+    
     }
     
     func cleanDir(ar:[String]) -> [String]{
@@ -106,34 +161,20 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
             var clean = dir.stringByReplacingOccurrencesOfString("/", withString: "")
             clean = clean.stringByReplacingOccurrencesOfString("stickers", withString: "")
             strings.append(clean)
-            
-            
-            
-            
         }
-        
-        
-    
-        
-        
+      
         return strings
     
     }
     
     override func viewWillAppear(animated: Bool) {
+         ibo_collectionView.reloadData()
         
-        ibo_iboPageControl.numberOfPages = assetArray.count
-        
-//        currentPage =  NSUserDefaults.standardUserDefaults().integerForKey("lastPage")
-//        
-//        let indexPath = NSIndexPath(forItem: currentPage, inSection: 1)
-//        ibo_collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
-//        
-        
-        
-            ibo_collectionView.reloadData()
-        
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.setupTabBar()
     }
     
     @IBAction func iba_restore(sender:UIBarButtonItem){
@@ -162,26 +203,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
                 break
             }
         }
-        
-       
-        
-//        SwiftyStoreKit.restorePurchases() { result in
-//            
-//            if result.restoreFailedProducts.count > 0 {
-//
-//            }
-//            else if result.restoredProductIds.count > 0 {
-//                print("Restore Success: \(result.restoredProductIds)")
 
-//            }
-//            else {
-//                print("Nothing to Restore")
-//                self.showAlert("Nothing to Restore")
-//                PKHUD.sharedHUD.hide()
-//            }
-//            
-//            
-//        }
         
     }
     
@@ -195,41 +217,53 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assetArray.count
+        return assetArray[currentPageIndex].count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        ibo_iboPageControl.currentPage = indexPath.item
         
-        currentPageID = assetDIR[indexPath.item]
-        if NSUserDefaults.standardUserDefaults().boolForKey(assetDIR[indexPath.item]) == false {
-            lockedPage = true
+        currentPageID = assetDIR[currentPageIndex]
+        if NSUserDefaults.standardUserDefaults().boolForKey(assetDIR[currentPageIndex]) == false {
+            isLocked = true
             self.ibo_lockBtn.hidden = false
         } else {
             
-            lockedPage = false
+            isLocked = false
             self.ibo_lockBtn.hidden = true
             
         }
         
-        NSUserDefaults.standardUserDefaults().setInteger(indexPath.item, forKey: "lastPage")
     
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("page", forIndexPath: indexPath) as! StickerPageCollectionView
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! StickerCollectionCell
         
-        cell.delegate = self.delegate
-        cell.isLocked = lockedPage
-        cell.setupDir(self.assetArray[indexPath.item], rect: self.ibo_collectionView.frame.size)
-        
+        cell.ibo_imageViewer.image = nil
+        cell.setupImage(assetArray[currentPageIndex][indexPath.item])
         return cell
+        
 
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
+        if isLocked == true {
+            return
+        }
+        
+        
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StickerCollectionCell
+        
+        if let cellimage = cell.cellImage as UIImage? {
+            
+            self.delegate?.stickerDidFinishChoosing!(cellimage as UIImage)
+            
+        }
+        
     }
     
+
+
     @IBAction func purchaseITEM(){
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
@@ -259,7 +293,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         
     }
-    
+
     func showAlert(message:String){
         
         let alertController = UIAlertController(
@@ -284,115 +318,11 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     override func prefersStatusBarHidden() -> Bool {
         return false
     }
-    
-}
-
-class StickerPageCollectionView: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate{
-    
-    var assetPage = [[String]]()
-    
-    @IBOutlet var ibo_collectionView:UICollectionView!
-    var delegate:StickerSelectDelegate?
-    var isLocked:Bool = true
-    
-    func setupDir(pack:[[String]], rect:CGSize ){
-        
-        print(rect)
-        
-        let flowLayoutFull = UICollectionViewFlowLayout()
-        flowLayoutFull.sectionInset = UIEdgeInsetsMake(20, 10, 20, 0)
-        flowLayoutFull.itemSize = CGSizeMake(rect.width/3 - 20, rect.width/3 - 20)
-        flowLayoutFull.scrollDirection = .Vertical
-        flowLayoutFull.minimumLineSpacing = 0
-        
-        ibo_collectionView.setCollectionViewLayout(flowLayoutFull, animated: false)
-
-        self.assetPage = pack
-        self.ibo_collectionView.setContentOffset(CGPointZero, animated: false)
-        
-        self.ibo_collectionView.reloadData()
-        
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int{
-        return assetPage.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assetPage[section].count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-      
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! StickerCollectionCell
-        
-        cell.ibo_imageViewer.image = nil
-        cell.setupImage(assetPage[indexPath.section][indexPath.item])
-        return cell
-    
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        
-        if isLocked == true {
-            return
-        }
-        
-        
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StickerCollectionCell
-        
-        if let cellimage = cell.cellImage as UIImage? {
-            
-             self.delegate?.stickerDidFinishChoosing!(cellimage as UIImage)
-           
-        }
-        
-    }
-
-
-    
-    
-  
 
 }
 
 
-import iAd
 
-class CollectionFooter :UICollectionReusableView , ADBannerViewDelegate{
-    
-    @IBOutlet var adBanner:ADBannerView?
-    
-    func setupCell(){
-        
-            print("cell")
-            self.backgroundColor = UIColor.yellowColor()
-            
-            if adBanner?.bannerLoaded != nil {
-                adBanner?.hidden = false
-            } else {
-                adBanner?.hidden = true
-                print("didnt load")
-            }
- 
-    }
-    
-    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!){
-        
-        print("FAILED")
-        adBanner?.hidden = true
-        adBanner?.removeFromSuperview()
-    }
-    
-    func bannerViewDidLoadAd(banner: ADBannerView!) {
-        
-        adBanner?.hidden = false
-        
-    }
-    
-}
 
 
 
@@ -431,9 +361,9 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         title = "Select Sticker"
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .Plain, target: self, action: "iba_done:")
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(StickerSectionViewController.iba_done(_:)))
         
-        navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .Plain, target: self, action: "iba_restore:")
+        navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .Plain, target: self, action: #selector(StickerSectionViewController.iba_restore(_:)))
         
         navigationController?.navigationBar.tintColor = UIColor.magentaColor()
         navigationController?.navigationBar.backgroundColor = UIColor.yellowColor()
@@ -463,9 +393,7 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
     }
     
     func iba_restore(sender: UIBarButtonItem){
-        
-        
-        
+  
     }
     
     func iba_done(sender: UIBarButtonItem){

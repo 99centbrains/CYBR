@@ -44,6 +44,8 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     var newLabel:UITextView!
     
+    var boolBackgroundImage = false
+    
     override func viewDidLoad() {
         
 
@@ -233,12 +235,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             ibo_toolBar.view.frame = CGRectMake(0, 0, ibo_container.view.frame.width, ibo_container.view.frame.height)
             ibo_toolBar.delegate = self
 
-            
-            
         }
-        
-        
-        
         
     }
     
@@ -258,6 +255,8 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     */
     
     func foto_import(){
+        
+        boolBackgroundImage = false
         
         let alertController = UIAlertController(
             title: "Choose Image",
@@ -304,18 +303,30 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         dismissViewControllerAnimated(true, completion: { () -> Void in
             
-            print("Dismiss")
-            if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                
-                ///self.letUserCreateSticker(pickedImage)
-                
-                let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CutOutPainter") as! CutOutPainter
-                vc.delegate = self
-                vc.paintedImage = pickedImage
-                self.presentViewController(vc, animated: true, completion: nil)
-                
-                
-            }
+            
+            
+            
+                print("Dismiss")
+                if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                    
+                    if self.boolBackgroundImage == false {
+                        
+                        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CutOutPainter") as! CutOutPainter
+                        vc.delegate = self
+                        vc.paintedImage = pickedImage
+                        self.presentViewController(vc, animated: true, completion: nil)
+                        
+                    } else {
+                        
+                        self.ibo_canvas.iba_userImage.image = pickedImage
+                        
+                    }
+                    
+                    
+                    
+                    
+                }
+            
             
         })
         
@@ -323,6 +334,13 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     
     func cutOutDidFinish(img:UIImage, vc:CutOutPainter){
+        
+        if currentSticker != nil {
+            currentSticker.image = img
+            vc.dismissViewControllerAnimated(true, completion: nil)
+
+            return
+        }
         
         self.stickerDidFinishChoosing(img)
         vc.dismissViewControllerAnimated(true, completion: nil)
@@ -362,6 +380,50 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         showColorSelector()
         return
+    }
+    
+    func tool_backgroundPhoto(){
+        
+        boolBackgroundImage = true
+        
+        let alertController = UIAlertController(
+            title: "Background Image",
+            message: nil,
+            preferredStyle: .ActionSheet
+        )
+        
+        let imagePicker = UIImagePickerController()
+        
+        imagePicker.allowsEditing = false
+        imagePicker.delegate = self
+        
+        alertController.addAction(UIAlertAction(title: "Camera", style: .Default) { _ in
+            imagePicker.sourceType = .Camera
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+            })
+        
+        alertController.addAction(UIAlertAction(title: "Photo Library", style: .Default) { _ in
+            imagePicker.sourceType = .PhotoLibrary
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+            })
+        
+        if self.ibo_canvas.iba_userImage.image != nil {
+            alertController.addAction(UIAlertAction(title: "Clear Image", style: .Default) { _ in
+                imagePicker.sourceType = .PhotoLibrary
+                    self.ibo_canvas.iba_userImage.image = nil
+                })
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Never Mind", style: .Cancel) { _ in
+            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                //
+            })
+            })
+        
+        
+        presentViewController(alertController, animated: true) { () -> Void in
+            //
+        }
         
         
         
@@ -374,13 +436,12 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         let stickerBored = UIStoryboard(name: "StickerSelectStoryboard", bundle: nil)
         
-        
         let stickerNC = stickerBored.instantiateInitialViewController() as! UINavigationController
         
         let viewStickers = stickerBored.instantiateViewControllerWithIdentifier("sb_StickerSectionViewController") as! StickerSectionViewController
         viewStickers.delegate = self
         viewStickers.title = "Stickers"
-        var stickerdir = [
+        let stickerdir = [
             "/stickers/com.99centbrains.cybrfm.free00/",
             "/stickers/com.99centbrains.cybrfm.free01/",
             "/stickers/com.99centbrains.cybrfm.icons01/",
@@ -404,28 +465,6 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         stickerNC.pushViewController(viewStickers, animated: false)
         
         
-        
-        
-        //////////////
-        /*
-        let emojiNC = stickerBored.instantiateInitialViewController() as! UINavigationController
-        let emojiview = stickerBored.instantiateViewControllerWithIdentifier("sb_StickerSectionViewController") as! StickerSectionViewController
-        emojiview.delegate = self
-        emojiview.title = "Emojis"
-        emojiview.loadDirectorys([
-            "/stickers/emoji/tab01/",
-            "/stickers/emoji/tab02/",
-            "/stickers/emoji/tab03/",
-            "/stickers/emoji/tab04/",
-            "/stickers/emoji/tab05/",
-            
-            ])
-        
-        let tabbar_emojiview = UITabBarItem(title: "Emojis", image: UIImage(named:"ui_tabbar_emoji"), tag: 2)
-        emojiview.tabBarItem = tabbar_emojiview
-        emojiNC.pushViewController(emojiview, animated: false)
-        */
-        
         //////////
         let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CFInterWebsViewController") as! CFInterWebsViewController
         
@@ -443,10 +482,9 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         tabbar.tabBar.barTintColor = UIColor.whiteColor()
         
         presentViewController(tabbar, animated: true) { () -> Void in
-            //
-            
-            
+ 
         }
+ 
     }
     
     func stickerDidFinishChoosing(img:UIImage){
@@ -539,12 +577,12 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     
     func createGestures() {
+        
         // GESTURES
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.stickyMove(_:)))
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.stickyPinch(_:)))
         rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(self.stickyRotate(_:)))
         longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.stickyLongTap(_:)))
-        
         
         panGesture.delegate = self
         pinchGesture.delegate = self
@@ -561,7 +599,6 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         self.view.addGestureRecognizer(longTapGesture)
         
         ibo_canvas.view.userInteractionEnabled = true
-        
         
     }
     
@@ -684,9 +721,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         newLabel.autocorrectionType = .No
         newLabel.delegate = self
         newLabel.becomeFirstResponder()
-        
-        
-        
+
         newLabel.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
         self.view.addSubview(newLabel)
@@ -860,16 +895,13 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         ibo_drawingView.userInteractionEnabled = true
         ibo_toolPainter.view.frame = CGRectMake(0, 0, ibo_container.view.frame.size.width, ibo_container.view.frame.size.height)
         ibo_toolPainter.delegate = self
-        
-      
-        
+
         removeGestures()
         
     
     }
     
     func tool_paintMoji(){
-        
                
         ibo_emojiPainter = storyboard?.instantiateViewControllerWithIdentifier("seg_EmojiToolViewController") as! PaintToolViewController
         ibo_container.view.addSubview(ibo_emojiPainter.view)
@@ -940,10 +972,10 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         ibo_drawingView.lineWidth = paintSize
         ibo_drawingView.userInteractionEnabled = false
         
-        ibo_drawingView.layer.shadowColor = UIColor.cyanColor().CGColor
-        ibo_drawingView.layer.shadowOffset = CGSizeMake(0, 0)
-        ibo_drawingView.layer.shadowRadius = 10
-        ibo_drawingView.layer.shadowOpacity = 1.0
+//        ibo_drawingView.layer.shadowColor = UIColor.cyanColor().CGColor
+//        ibo_drawingView.layer.shadowOffset = CGSizeMake(0, 0)
+//        ibo_drawingView.layer.shadowRadius = 10
+//        ibo_drawingView.layer.shadowOpacity = 1.0
         
         ibo_emojiPaintView = EmojiDrawView(frame: CGRectMake(0, 0, ibo_canvas.view.frame.width, ibo_canvas.view.frame.height))
         ibo_canvas.view.insertSubview(ibo_emojiPaintView, belowSubview: ibo_canvas.ibo_stickerStage)
@@ -1017,19 +1049,35 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         }
     }
     
-    func paint_popout(){
+     func paint_popout(){
+      
         
+    
+            
+            let painter = ibo_drawingView.renderSticker()
+            if painter == nil {
+                return
+            }
+            paint_dismiss()
+            stickerDidFinishChoosing(painter!)
+        
+
+    }
+    
+    func emoji_popOut(){
+    
         let painter = ibo_emojiPaintView.renderSticker()
         if painter == nil {
             return
         }
+        
         paint_dismiss()
         stickerDidFinishChoosing(painter!)
         
     
     }
-    
-    
+
+
     func paint_undo(){
     
     }
@@ -1164,6 +1212,17 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
 
     }
     
+    func edit_editImage() {
+        
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CutOutPainter") as! CutOutPainter
+        vc.delegate = self
+        vc.paintedImage = self.currentSticker.image
+        self.presentViewController(vc, animated: true, completion: nil)
+        
+        
+        
+    }
+    
     func degreesToRadians (val:CGFloat) -> CGFloat {
         let rad = val * CGFloat((M_PI / 180.0))
         return CGFloat(rad)
@@ -1244,5 +1303,6 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
 
 
 class CanvasToolContViewController: UIViewController {
+    
     //
 }

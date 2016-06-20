@@ -89,7 +89,11 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ColorCellView
-        delegate.colorSelectChoseColor(cell.backgroundColor!)
+        if indexPath.item == 0 {
+            delegate.colorSelectChoseColor(UIColor.clearColor())
+        } else {
+            delegate.colorSelectChoseColor(cell.backgroundColor!)
+        }
         
         
         

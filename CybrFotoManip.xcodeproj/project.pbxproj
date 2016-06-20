@@ -97,6 +97,10 @@
 		8075EE921BA9ED1700D284AA /* StickyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075EE8E1BA9ED1700D284AA /* StickyView.swift */; };
 		8075EE941BA9ED1700D284AA /* KADSwiftDraw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075EE8F1BA9ED1700D284AA /* KADSwiftDraw.swift */; };
 		8075F51C1BAA23DF00D284AA /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075F51B1BAA23DF00D284AA /* AssetManager.swift */; };
+		807896341D176744003F2C4E /* ui_b_icon_backgroundphoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 807896321D176744003F2C4E /* ui_b_icon_backgroundphoto.png */; };
+		807896351D176744003F2C4E /* ui_b_icon_blurbs.png in Resources */ = {isa = PBXBuildFile; fileRef = 807896331D176744003F2C4E /* ui_b_icon_blurbs.png */; };
+		807896371D17695A003F2C4E /* ui_b_icon_paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 807896361D17695A003F2C4E /* ui_b_icon_paintbrush.png */; };
+		807896391D17710A003F2C4E /* ui_b_icon_popout.png in Resources */ = {isa = PBXBuildFile; fileRef = 807896381D17710A003F2C4E /* ui_b_icon_popout.png */; };
 		808D45231C112300009F0DBA /* stickers in Resources */ = {isa = PBXBuildFile; fileRef = 808D45211C112300009F0DBA /* stickers */; };
 		808D45241C112300009F0DBA /* swatches in Resources */ = {isa = PBXBuildFile; fileRef = 808D45221C112300009F0DBA /* swatches */; };
 		808D45281C116708009F0DBA /* TumblrFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D45271C116708009F0DBA /* TumblrFeedViewController.swift */; };
@@ -223,6 +227,10 @@
 		8075EE8E1BA9ED1700D284AA /* StickyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickyView.swift; sourceTree = "<group>"; };
 		8075EE8F1BA9ED1700D284AA /* KADSwiftDraw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KADSwiftDraw.swift; sourceTree = "<group>"; };
 		8075F51B1BAA23DF00D284AA /* AssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetManager.swift; sourceTree = "<group>"; };
+		807896321D176744003F2C4E /* ui_b_icon_backgroundphoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_b_icon_backgroundphoto.png; sourceTree = "<group>"; };
+		807896331D176744003F2C4E /* ui_b_icon_blurbs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_b_icon_blurbs.png; sourceTree = "<group>"; };
+		807896361D17695A003F2C4E /* ui_b_icon_paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_b_icon_paintbrush.png; sourceTree = "<group>"; };
+		807896381D17710A003F2C4E /* ui_b_icon_popout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_b_icon_popout.png; sourceTree = "<group>"; };
 		808D005B1B9FDB6700E020A9 /* CybrFotoManip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CybrFotoManip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		808D00701B9FDB6700E020A9 /* CybrFotoManip.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CybrFotoManip.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		808D45211C112300009F0DBA /* stickers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = stickers; sourceTree = "<group>"; };
@@ -292,6 +300,7 @@
 				8071A3AB1C0BA01100FD4609 /* CWToolBarViewController.swift */,
 				80E638E31CB2EAE2004B4332 /* CFInterwebs.swift */,
 				801E7C2E1CBA157E009965D4 /* CutOutPainterViewController.swift */,
+				8075EE891BA9D72400D284AA /* _sharedClasses */,
 				808D45261C1166CB009F0DBA /* TumblrFeedViewController */,
 				8071A3B71C0BA01200FD4609 /* StickerSelect */,
 				808D45251C1166B7009F0DBA /* icons */,
@@ -334,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				801E7C1A1CB89A4C009965D4 /* ui_bg_aqua.png */,
+				807896381D17710A003F2C4E /* ui_b_icon_popout.png */,
 				80EFF5F31CC419B6006C2B2D /* ui_edit_undo.png */,
 				80249CDC1CD9676D00CBE706 /* ui_gradient.png */,
 				80EFF5F41CC419B6006C2B2D /* ui_edit_zoom.png */,
@@ -367,6 +377,8 @@
 				8039630F1CAF500500F3C1B4 /* ui_edit_color.png */,
 				803962EB1CAF448700F3C1B4 /* ui_b_icon_pencil.png */,
 				803962EC1CAF448700F3C1B4 /* ui_b_icon_paste.png */,
+				807896321D176744003F2C4E /* ui_b_icon_backgroundphoto.png */,
+				807896331D176744003F2C4E /* ui_b_icon_blurbs.png */,
 				803962ED1CAF448700F3C1B4 /* ui_b_icon_paint.png */,
 				803962EE1CAF448700F3C1B4 /* ui_b_icon_cam.png */,
 				803962EF1CAF448700F3C1B4 /* ui_b_icon_bground.png */,
@@ -392,6 +404,7 @@
 				80249CE21CD9A07F00CBE706 /* ui_tabbar_emoji@2x.png */,
 				80249CE31CD9A07F00CBE706 /* ui_tabbar_emoji@3x.png */,
 				80249CE41CD9A07F00CBE706 /* ui_tabbar_web@2x.png */,
+				807896361D17695A003F2C4E /* ui_b_icon_paintbrush.png */,
 				80249CE51CD9A07F00CBE706 /* ui_tabbar_web@3x.png */,
 			);
 			path = ui;
@@ -445,7 +458,8 @@
 				8075EE8A1BA9D72400D284AA /* CanvasViewController.swift */,
 				80BABAE41BAE7DD20002E815 /* ColorSelectViewController.swift */,
 			);
-			path = _sharedClasses;
+			name = _sharedClasses;
+			path = ../_sharedClasses;
 			sourceTree = "<group>";
 		};
 		808D00521B9FDB6700E020A9 = {
@@ -454,7 +468,6 @@
 				80B80EBA1C0BA57D00BC9A61 /* CybrFotoManip-Bridging-Header.h */,
 				80249CDA1CD962DE00CBE706 /* Links.plist */,
 				80F2881B1D1614E800F092D9 /* Blurbs.plist */,
-				8075EE891BA9D72400D284AA /* _sharedClasses */,
 				80719CFA1C0BA00A00FD4609 /* CybrFotoManip */,
 				8071AA561C0BA05400FD4609 /* CybrFMTest */,
 				8075EE791BA9D0E100D284AA /* CybrFotoManipTest */,
@@ -607,6 +620,7 @@
 				803963041CAF489400F3C1B4 /* ui_edit_layerup.png in Resources */,
 				801E7C2A1CB8ABA0009965D4 /* ui_share_snapchat.png in Resources */,
 				8071AA471C0BA01200FD4609 /* icon_itunes.png in Resources */,
+				807896391D17710A003F2C4E /* ui_b_icon_popout.png in Resources */,
 				80249CE91CD9A07F00CBE706 /* ui_tabbar_emoji@3x.png in Resources */,
 				803963191CAF51FA00F3C1B4 /* ui_edit_align.png in Resources */,
 				801E7C191CB898EF009965D4 /* Icon@3x.png in Resources */,
@@ -621,6 +635,7 @@
 				80249CE61CD9A07F00CBE706 /* ui_tabbar_all@2x.png in Resources */,
 				8071AA401C0BA01200FD4609 /* Icon-152.png in Resources */,
 				803963081CAF489400F3C1B4 /* ui_btn_trash.png in Resources */,
+				807896351D176744003F2C4E /* ui_b_icon_blurbs.png in Resources */,
 				80F2881A1D15F7C600F092D9 /* smoothpet.ttf in Resources */,
 				803963031CAF489400F3C1B4 /* ui_edit_reflect.png in Resources */,
 				803962F91CAF448700F3C1B4 /* ui_b_icon_cam.png in Resources */,
@@ -666,6 +681,7 @@
 				803962DF1CAF3ADE00F3C1B4 /* ui_icon_world.png in Resources */,
 				803962D01CAF3A5300F3C1B4 /* ui_cropview_checkers.png in Resources */,
 				80EFF5F51CC419B6006C2B2D /* ui_edit_undo.png in Resources */,
+				807896371D17695A003F2C4E /* ui_b_icon_paintbrush.png in Resources */,
 				803963151CAF500500F3C1B4 /* ui_edit_color.png in Resources */,
 				801E7C1F1CB89C5F009965D4 /* ui_icon_saver.png in Resources */,
 				803962D11CAF3A5300F3C1B4 /* ui_cropview_checkers@2x.png in Resources */,
@@ -678,6 +694,7 @@
 				801E7C1C1CB89A4C009965D4 /* ui_bg_aqua.png in Resources */,
 				8071AA481C0BA01200FD4609 /* Images.xcassets in Resources */,
 				8071AA5C1C0BA05400FD4609 /* Images.xcassets in Resources */,
+				807896341D176744003F2C4E /* ui_b_icon_backgroundphoto.png in Resources */,
 				8071AA431C0BA01200FD4609 /* Icon-76.png in Resources */,
 				80249CEB1CD9A07F00CBE706 /* ui_tabbar_web@3x.png in Resources */,
 				80249CDD1CD9676D00CBE706 /* ui_gradient.png in Resources */,

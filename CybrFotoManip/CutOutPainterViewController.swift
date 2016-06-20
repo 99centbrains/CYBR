@@ -27,6 +27,7 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ibo_scrollview.minimumZoomScale = 0.5
         ibo_scrollview.maximumZoomScale = 3.0
         ibo_scrollview.delegate = self
         ibo_scrollview.scrollEnabled = false
@@ -159,7 +160,7 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
         ibo_drawingView.contentScaleFactor = 2.0
         ibo_drawingView.vc = self
         ibo_drawingView.userInteractionEnabled = true
-        ibo_drawingView.frame = CGRectMake(0, 0, imageSize.width, imageSize.height)
+        ibo_drawingView.frame = CGRectMake(0, 0, imageSize.width - 20, imageSize.height - 20)
         ibo_drawingView.center = CGPointMake(ibo_scrollview.frame.size.width / 2, ibo_scrollview.frame.size.height / 2)
         ibo_drawingView.fillBitmap(paintedImage)
         self.ibo_scrollview.addSubview(ibo_drawingView)

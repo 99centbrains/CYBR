@@ -63,7 +63,7 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate, UINavi
        
         //PushReview.scheduleReviewNotification()
         
-        CrossPromoManager().retrievePromoIDS(self)
+        //CrossPromoManager().retrievePromoIDS(self)
     
     }
     

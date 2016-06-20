@@ -18,6 +18,7 @@ protocol CWToolBarViewControllerDelegate {
     func foto_import()
     func foto_save()
     func tool_background()
+    func tool_backgroundPhoto()
     
     func tool_clearAll()
 }
@@ -49,19 +50,20 @@ class CWToolBarViewController:UIViewController {
     @IBAction func iba_paintSelect(){
         
         delegate.tool_paintSelect()
-        
     }
     
     @IBAction func iba_paintMoji(){
         
         delegate.tool_paintMoji()
-        
     }
     
     @IBAction func iba_backgroundTool(){
         
         delegate.tool_background()
-        
+    }
+    
+    @IBAction func iba_backgroundImage(){
+        delegate.tool_backgroundPhoto()
     }
     
     @IBAction func iba_fontTool(){
@@ -81,6 +83,8 @@ protocol CWStickerEditVCDelgate {
     func edit_layerUp()
     func edit_layerDown()
     func edit_reflect()
+    
+    func edit_editImage()
     
 }
 
@@ -132,6 +136,11 @@ class CWStickerEditViewController:UIViewController {
         
         delegate.edit_reflect()
         
+    }
+    
+    @IBAction func edit_editSticker(){
+    
+        delegate.edit_editImage()
     }
     
    

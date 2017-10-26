@@ -15,8 +15,8 @@ class StickyView:UIView {
 
 public enum StickyImageType : Int {
     
-    case Image
-    case Text
+    case image
+    case text
     
 }
 
@@ -30,12 +30,12 @@ class StickyImageView: UIImageView {
     var stickyKind:StickyImageType!
     
     
-    var tapCallback: ((sticker: StickyImageView) -> ())? = nil
+    var tapCallback: ((_ sticker: StickyImageView) -> ())? = nil
     
     override init(frame: CGRect) {
         
         super.init(frame: frame)
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
       
     }
 
@@ -44,7 +44,7 @@ class StickyImageView: UIImageView {
     }
     
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
         
@@ -62,19 +62,19 @@ class StickyImageView: UIImageView {
 //            [theCoin changeCoin:coin];
     //}
         
-        NSNotificationCenter.defaultCenter().postNotificationName("StickerTap", object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "StickerTap"), object: self)
     }
     
     func flipSticker(){
     
         var flippedImage:UIImage!
         
-        if self.image!.imageOrientation == .UpMirrored{
+        if self.image!.imageOrientation == .upMirrored{
             
-            flippedImage = UIImage(CGImage: self.image!.CGImage!, scale: self.image!.scale, orientation: UIImageOrientation.Up)
+            flippedImage = UIImage(cgImage: self.image!.cgImage!, scale: self.image!.scale, orientation: UIImageOrientation.up)
         
         } else {
-            flippedImage = UIImage(CGImage: self.image!.CGImage!, scale: self.image!.scale, orientation: UIImageOrientation.UpMirrored)
+            flippedImage = UIImage(cgImage: self.image!.cgImage!, scale: self.image!.scale, orientation: UIImageOrientation.upMirrored)
         }
         
         self.image = flippedImage

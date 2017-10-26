@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol CutOutPainterDelegate {
-    func cutOutDidFinish(img:UIImage, vc:CutOutPainter)
+    func cutOutDidFinish(_ img:UIImage, vc:CutOutPainter)
 }
 
 class CutOutPainter:UIViewController , UIScrollViewDelegate{
@@ -30,9 +30,9 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
         ibo_scrollview.minimumZoomScale = 0.5
         ibo_scrollview.maximumZoomScale = 3.0
         ibo_scrollview.delegate = self
-        ibo_scrollview.scrollEnabled = false
+        ibo_scrollview.isScrollEnabled = false
         
-        ibo_drawingView.userInteractionEnabled = true
+        ibo_drawingView.isUserInteractionEnabled = true
         ibo_erasebtn.alpha = 0.5
     }
     
@@ -44,18 +44,18 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     
     @IBAction func iba_dmiss(){
     
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
-    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         
         
     }
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
      
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return ibo_drawingView
     }
     
@@ -71,23 +71,23 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     
     }
     
-    func paintSizeAnimate(size:CGFloat){
+    func paintSizeAnimate(_ size:CGFloat){
         
        
         
-        let sampleView = UIImageView(frame: CGRectMake(0, 0, size, size))
+        let sampleView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
         sampleView.center = self.view.center
         
         sampleView.backgroundColor = ibo_drawingView.lineColor
         sampleView.layer.cornerRadius = size/2
-        sampleView.layer.borderColor = UIColor.blackColor().CGColor
+        sampleView.layer.borderColor = UIColor.black.cgColor
         sampleView.layer.borderWidth = 2.0
         
         
         self.view.addSubview(sampleView)
         
         
-        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
             
             sampleView.alpha = 0
             
@@ -101,23 +101,23 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     }
 
     
-    @IBAction func iba_toggleScrollBox(sender:UIButton){
+    @IBAction func iba_toggleScrollBox(_ sender:UIButton){
         
         if sender.tag == 0 {
             
             ibo_zoombtn.alpha = 1
             ibo_erasebtn.alpha = 0.5
             
-            ibo_scrollview.scrollEnabled = false
-            ibo_drawingView.userInteractionEnabled = true
+            ibo_scrollview.isScrollEnabled = false
+            ibo_drawingView.isUserInteractionEnabled = true
         
         } else if sender.tag == 1{
             
             ibo_zoombtn.alpha = 0.5
             ibo_erasebtn.alpha = 1
             
-            ibo_scrollview.scrollEnabled = true
-            ibo_drawingView.userInteractionEnabled = false
+            ibo_scrollview.isScrollEnabled = true
+            ibo_drawingView.isUserInteractionEnabled = false
             
         }
         
@@ -126,7 +126,7 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
          self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
@@ -137,10 +137,10 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
         //portrait
         if paintedImage.size.width < paintedImage.size.height {
             
-            imageSize = CGSizeMake(
-                paintedImage.size.width/paintedImage.size.height *
+            imageSize = CGSize(
+                width: paintedImage.size.width/paintedImage.size.height *
                                     self.ibo_scrollview.frame.size.height,
-                                    self.ibo_scrollview.frame.size.height
+                                    height: self.ibo_scrollview.frame.size.height
             )
             
            
@@ -148,8 +148,8 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
             
         } else {
             
-            imageSize = CGSizeMake(self.ibo_scrollview.frame.size.width,
-                                   paintedImage.size.height/paintedImage.size.width * self.ibo_scrollview.frame.size.width)
+            imageSize = CGSize(width: self.ibo_scrollview.frame.size.width,
+                                   height: paintedImage.size.height/paintedImage.size.width * self.ibo_scrollview.frame.size.width)
         }
         
         print("IMAGE SIZE \(imageSize)")
@@ -159,9 +159,9 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
         ibo_drawingView.eraserMode = true
         ibo_drawingView.contentScaleFactor = 2.0
         ibo_drawingView.vc = self
-        ibo_drawingView.userInteractionEnabled = true
-        ibo_drawingView.frame = CGRectMake(0, 0, imageSize.width - 20, imageSize.height - 20)
-        ibo_drawingView.center = CGPointMake(ibo_scrollview.frame.size.width / 2, ibo_scrollview.frame.size.height / 2)
+        ibo_drawingView.isUserInteractionEnabled = true
+        ibo_drawingView.frame = CGRect(x: 0, y: 0, width: imageSize.width - 20, height: imageSize.height - 20)
+        ibo_drawingView.center = CGPoint(x: ibo_scrollview.frame.size.width / 2, y: ibo_scrollview.frame.size.height / 2)
         ibo_drawingView.fillBitmap(paintedImage)
         self.ibo_scrollview.addSubview(ibo_drawingView)
         ibo_scrollview.contentSize = imageSize
@@ -170,26 +170,26 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
 
     }
     
-    func drawingMask(cache:UIImage){
+    func drawingMask(_ cache:UIImage){
         
         
 //self.ibo_imagePainted.image =
         //self.ibo_imagePainted.image = cache
     }
     
-    func maskImage(image:UIImage, mask:(UIImage))->UIImage{
+    func maskImage(_ image:UIImage, mask:(UIImage))->UIImage{
         
-        let imageReference = image.CGImage
-        let maskReference = mask.CGImage
-        let imageMask = CGImageMaskCreate(CGImageGetWidth(maskReference),
-                                          CGImageGetHeight(maskReference),
-                                          CGImageGetBitsPerComponent(maskReference),
-                                          CGImageGetBitsPerPixel(maskReference),
-                                          CGImageGetBytesPerRow(maskReference),
-                                          CGImageGetDataProvider(maskReference), nil, true)
+        let imageReference = image.cgImage
+        let maskReference = mask.cgImage
+        let imageMask = CGImage(maskWidth: (maskReference?.width)!,
+                                          height: (maskReference?.height)!,
+                                          bitsPerComponent: (maskReference?.bitsPerComponent)!,
+                                          bitsPerPixel: (maskReference?.bitsPerPixel)!,
+                                          bytesPerRow: (maskReference?.bytesPerRow)!,
+                                          provider: (maskReference?.dataProvider!)!, decode: nil, shouldInterpolate: true)
         
-        let maskedReference = CGImageCreateWithMask(imageReference, imageMask)
-        let maskedImage = UIImage(CGImage:maskedReference!)
+        let maskedReference = imageReference?.masking(imageMask!)
+        let maskedImage = UIImage(cgImage:maskedReference!)
         return maskedImage
         
     }
@@ -204,22 +204,22 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
 
 class SwiftEraseView: UIView {
     
-    private var firstTimeCache = true
-    private var path = UIBezierPath()
-    private var cache = UIImage()
+    fileprivate var firstTimeCache = true
+    fileprivate var path = UIBezierPath()
+    fileprivate var cache = UIImage()
     
-    private var pts = [CGPointZero, CGPointZero, CGPointZero, CGPointZero]
-    private var ctr: Int!
+    fileprivate var pts = [CGPoint.zero, CGPoint.zero, CGPoint.zero, CGPoint.zero]
+    fileprivate var ctr: Int!
     
     var lineWidth: CGFloat = 2.0
-    var lineColor = UIColor.blackColor()
+    var lineColor = UIColor.black
     var eraserMode = false
     
     var states = [UIImage]()
     
     var vc:CutOutPainter!
     
-    var undoManage:NSUndoManager!
+    var undoManage:UndoManager!
     
     
     override init(frame: CGRect) {
@@ -234,12 +234,12 @@ class SwiftEraseView: UIView {
     }
     
     func setupView() {
-        backgroundColor = UIColor.clearColor()
-        opaque = false
+        backgroundColor = UIColor.clear
+        isOpaque = false
     }
     
     
-    func fillBitmap(img:UIImage){
+    func fillBitmap(_ img:UIImage){
         
         
         print("Draw Bitmap")
@@ -248,12 +248,12 @@ class SwiftEraseView: UIView {
         
         if (firstTimeCache) {
             let fixedImage = img
-            fixedImage.drawInRect(CGRectMake(0, 0, bounds.width, bounds.height))
+            fixedImage.draw(in: CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height))
             firstTimeCache = false
         }
         
         
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
         print("ADD IMAGE")
@@ -264,19 +264,19 @@ class SwiftEraseView: UIView {
         
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
        
         print("draw rect")
-        cache.drawInRect(rect)
+        cache.draw(in: rect)
         
        
         
         path.lineWidth = lineWidth
-        path.lineCapStyle = CGLineCap.Round
+        path.lineCapStyle = CGLineCap.round
         if eraserMode {
-            UIColor.whiteColor().setStroke()
-            path.strokeWithBlendMode(CGBlendMode.Clear, alpha: 1.0)
+            UIColor.white.setStroke()
+            path.stroke(with: CGBlendMode.clear, alpha: 1.0)
         } else {
             lineColor.setStroke()
             path.stroke()
@@ -287,26 +287,26 @@ class SwiftEraseView: UIView {
     }
     
     
-    override func touchesBegan(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches:  Set<UITouch>, with event: UIEvent?) {
         print("touch")
         
        
         
         ctr = 0
         let touch = touches.first
-        pts[0] = touch!.locationInView(self)
+        pts[0] = touch!.location(in: self)
         
     }
     
-    override func touchesMoved(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches:  Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        let p = touch!.locationInView(self)
+        let p = touch!.location(in: self)
         ctr = ctr + 1
         pts[ctr] = p
         if  (ctr == 3) {
-            pts[2] = CGPointMake((pts[1].x + pts[3].x)/2.0, (pts[1].y + pts[3].y)/2.0);
-            path.moveToPoint(pts[0])
-            path.addQuadCurveToPoint(pts[2], controlPoint: pts[1])
+            pts[2] = CGPoint(x: (pts[1].x + pts[3].x)/2.0, y: (pts[1].y + pts[3].y)/2.0);
+            path.move(to: pts[0])
+            path.addQuadCurve(to: pts[2], controlPoint: pts[1])
             setNeedsDisplay()
             pts[0] = pts[2]
             pts[1] = pts[3]
@@ -314,9 +314,9 @@ class SwiftEraseView: UIView {
         }
     }
     
-    override func touchesEnded(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches:  Set<UITouch>, with event: UIEvent?) {
         
-        if self.userInteractionEnabled == false {
+        if self.isUserInteractionEnabled == false {
             return
         }
         
@@ -324,17 +324,17 @@ class SwiftEraseView: UIView {
         {
             //path.addArcWithCenter(pts[0], radius: 1, startAngle: 0, endAngle: CGFloat(M_PI) * 2, clockwise: true)
             let magicNumber = lineWidth / 6
-            path = UIBezierPath(roundedRect: CGRectMake(pts[0].x, pts[0].y, magicNumber, magicNumber), cornerRadius: magicNumber / 2)
+            path = UIBezierPath(roundedRect: CGRect(x: pts[0].x, y: pts[0].y, width: magicNumber, height: magicNumber), cornerRadius: magicNumber / 2)
         }
         else if (ctr == 1)
         {
-            path.moveToPoint(pts[0])
-            path.addLineToPoint(pts[1])
+            path.move(to: pts[0])
+            path.addLine(to: pts[1])
         }
         else if (ctr == 2)
         {
-            path.moveToPoint(pts[0])
-            path.addQuadCurveToPoint(pts[2], controlPoint: pts[1])
+            path.move(to: pts[0])
+            path.addQuadCurve(to: pts[2], controlPoint: pts[1])
         }
         if !eraserMode {
             self.drawBitmap()
@@ -349,14 +349,14 @@ class SwiftEraseView: UIView {
         print("DREW")
     }
     
-    override func touchesCancelled(touches:  Set<UITouch>?, withEvent event: UIEvent?) {
-        touchesEnded(touches!, withEvent: event)
+    override func touchesCancelled(_ touches:  Set<UITouch>, with event: UIEvent?) {
+        touchesEnded(touches, with: event)
         
         print("DREW")
     }
     
     
-    func imageFixBoundingBox(image:UIImage) -> UIImage{
+    func imageFixBoundingBox(_ image:UIImage) -> UIImage{
         
         var height:CGFloat
         var width:CGFloat
@@ -366,24 +366,24 @@ class SwiftEraseView: UIView {
         height = image.size.height
         width = image.size.width
         
-        let rect = CGRectMake(0, 0, self.bounds.size.width,  self.bounds.size.width)
+        let rect = CGRect(x: 0, y: 0, width: self.bounds.size.width,  height: self.bounds.size.width)
         
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextTranslateCTM(context, 0, rect.size.height)
-        CGContextScaleCTM(context, 1.0, -1.0)
+        context?.translateBy(x: 0, y: rect.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
         
         
-        let lowerImage = CGRectMake((rect.size.width - width) / 2.0, (rect.size.height - height) / 2.0,
-                                    width,
-                                    height)
+        let lowerImage = CGRect(x: (rect.size.width - width) / 2.0, y: (rect.size.height - height) / 2.0,
+                                    width: width,
+                                    height: height)
         
-        CGContextSetBlendMode(context, .Normal);
-        CGContextDrawImage(context, lowerImage, image.CGImage);
+        context?.setBlendMode(.normal);
+        context?.draw(image.cgImage!, in: lowerImage);
         
         
-        let final:UIImage = UIGraphicsGetImageFromCurrentImageContext();
+        let final:UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
         
         return final
         
@@ -395,21 +395,21 @@ class SwiftEraseView: UIView {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
         
         path.lineWidth = lineWidth
-        path.lineCapStyle = CGLineCap.Round
+        path.lineCapStyle = CGLineCap.round
         
         
     
         if (firstTimeCache) {
             let rectPath = UIBezierPath(rect: bounds)
-            UIColor.clearColor().setFill()
+            UIColor.clear.setFill()
             rectPath.fill()
             firstTimeCache = false
         }
         
-        cache.drawAtPoint(CGPointZero)
-        path.strokeWithBlendMode(CGBlendMode.Normal, alpha: 1.0)
+        cache.draw(at: CGPoint.zero)
+        path.stroke(with: CGBlendMode.normal, alpha: 1.0)
         
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
         
@@ -419,9 +419,9 @@ class SwiftEraseView: UIView {
     func eraseBitmap() {
         
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
-        cache.drawAtPoint(CGPointZero)
-        path.strokeWithBlendMode(CGBlendMode.Clear, alpha: 1.0)
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache.draw(at: CGPoint.zero)
+        path.stroke(with: CGBlendMode.clear, alpha: 1.0)
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
         states.append(cache)
@@ -445,8 +445,8 @@ class SwiftEraseView: UIView {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
         
         
-        cache.drawInRect(CGRectMake(0, 0, bounds.width, bounds.height))
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache.draw(in: CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height))
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
         self.setNeedsDisplay()
@@ -462,10 +462,10 @@ class SwiftEraseView: UIView {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
-        CGContextFillRect(context, self.bounds)
+        context?.setFillColor(UIColor.clear.cgColor)
+        context?.fill(self.bounds)
         
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
         self.setNeedsDisplay()

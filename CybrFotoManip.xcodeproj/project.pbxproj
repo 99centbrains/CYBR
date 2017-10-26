@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020FEB3C96C8A1C0D16D116E /* Pods_CybrFotoManip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C7C8CB3E7F2C580A2C5A733 /* Pods_CybrFotoManip.framework */; };
 		801AE82B1CF62B1F001E1E0F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 801AE82A1CF62B1F001E1E0F /* StoreKit.framework */; };
 		801AE8341CF6C3FF001E1E0F /* Greek Mythology.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 801AE82D1CF6C3FF001E1E0F /* Greek Mythology.ttf */; };
 		801AE8351CF6C3FF001E1E0F /* illustrate-it.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 801AE82E1CF6C3FF001E1E0F /* illustrate-it.ttf */; };
@@ -74,6 +75,9 @@
 		803963151CAF500500F3C1B4 /* ui_edit_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8039630F1CAF500500F3C1B4 /* ui_edit_color.png */; };
 		803963171CAF504700F3C1B4 /* ui_edit_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 803963161CAF504700F3C1B4 /* ui_edit_trash.png */; };
 		803963191CAF51FA00F3C1B4 /* ui_edit_align.png in Resources */ = {isa = PBXBuildFile; fileRef = 803963181CAF51FA00F3C1B4 /* ui_edit_align.png */; };
+		806921921E13005D00CB5434 /* ui_icon_box.png in Resources */ = {isa = PBXBuildFile; fileRef = 806921901E13005D00CB5434 /* ui_icon_box.png */; };
+		806921931E13005D00CB5434 /* ui_share_print.png in Resources */ = {isa = PBXBuildFile; fileRef = 806921911E13005D00CB5434 /* ui_share_print.png */; };
+		806921951E1329DE00CB5434 /* ui_icon_instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = 806921941E1329DE00CB5434 /* ui_icon_instagram.png */; };
 		8071AA321C0BA01200FD4609 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8071A3961C0BA01100FD4609 /* LaunchScreen.xib */; };
 		8071AA331C0BA01200FD4609 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8071A3981C0BA01100FD4609 /* Main.storyboard */; };
 		8071AA3C1C0BA01200FD4609 /* CWPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071A3A91C0BA01100FD4609 /* CWPlayViewController.swift */; };
@@ -119,7 +123,6 @@
 		80F288201D16159200F092D9 /* BasicSharpie.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80F2881D1D16159200F092D9 /* BasicSharpie.ttf */; };
 		80F288211D16159200F092D9 /* TwinMarker.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80F2881E1D16159200F092D9 /* TwinMarker.ttf */; };
 		80F288221D16159200F092D9 /* WithMyWoes.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80F2881F1D16159200F092D9 /* WithMyWoes.ttf */; };
-		C0B11835BC6546D1B092E3AE /* Pods_CybrFotoManip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1A645B9D7B67593B1629E6 /* Pods_CybrFotoManip.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +136,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A1A645B9D7B67593B1629E6 /* Pods_CybrFotoManip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CybrFotoManip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AE1CA6BF0424B55E41F6D6B /* Pods-CybrFotoManip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CybrFotoManip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip.debug.xcconfig"; sourceTree = "<group>"; };
+		4C7C8CB3E7F2C580A2C5A733 /* Pods_CybrFotoManip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CybrFotoManip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		801AE82A1CF62B1F001E1E0F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		801AE82D1CF6C3FF001E1E0F /* Greek Mythology.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Greek Mythology.ttf"; sourceTree = "<group>"; };
 		801AE82E1CF6C3FF001E1E0F /* illustrate-it.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "illustrate-it.ttf"; sourceTree = "<group>"; };
@@ -200,6 +204,9 @@
 		8039630F1CAF500500F3C1B4 /* ui_edit_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_edit_color.png; sourceTree = "<group>"; };
 		803963161CAF504700F3C1B4 /* ui_edit_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_edit_trash.png; sourceTree = "<group>"; };
 		803963181CAF51FA00F3C1B4 /* ui_edit_align.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_edit_align.png; sourceTree = "<group>"; };
+		806921901E13005D00CB5434 /* ui_icon_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_icon_box.png; sourceTree = "<group>"; };
+		806921911E13005D00CB5434 /* ui_share_print.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_share_print.png; sourceTree = "<group>"; };
+		806921941E1329DE00CB5434 /* ui_icon_instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui_icon_instagram.png; sourceTree = "<group>"; };
 		80719CFB1C0BA00A00FD4609 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8071A3971C0BA01100FD4609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		8071A3991C0BA01100FD4609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -253,8 +260,7 @@
 		80F2881D1D16159200F092D9 /* BasicSharpie.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BasicSharpie.ttf; sourceTree = "<group>"; };
 		80F2881E1D16159200F092D9 /* TwinMarker.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TwinMarker.ttf; sourceTree = "<group>"; };
 		80F2881F1D16159200F092D9 /* WithMyWoes.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = WithMyWoes.ttf; sourceTree = "<group>"; };
-		95982C9BDCBB5C51CCE8877D /* Pods-CybrFotoManip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CybrFotoManip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip.debug.xcconfig"; sourceTree = "<group>"; };
-		A18BC1DE4CF7959F6B0C2482 /* Pods-CybrFotoManip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CybrFotoManip.release.xcconfig"; path = "Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip.release.xcconfig"; sourceTree = "<group>"; };
+		AC57F6DF36A231D6A85F2ED2 /* Pods-CybrFotoManip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CybrFotoManip.release.xcconfig"; path = "Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,8 +268,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0B11835BC6546D1B092E3AE /* Pods_CybrFotoManip.framework in Frameworks */,
 				801AE82B1CF62B1F001E1E0F /* StoreKit.framework in Frameworks */,
+				020FEB3C96C8A1C0D16D116E /* Pods_CybrFotoManip.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,15 +283,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		748617B2A7AE352EA01A1A12 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				95982C9BDCBB5C51CCE8877D /* Pods-CybrFotoManip.debug.xcconfig */,
-				A18BC1DE4CF7959F6B0C2482 /* Pods-CybrFotoManip.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		80719CFA1C0BA00A00FD4609 /* CybrFotoManip */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +347,7 @@
 				801E7C1B1CB89A4C009965D4 /* ui_cybrsmile.png */,
 				803962CC1CAF3A5300F3C1B4 /* ui_cropview_checkers.png */,
 				803962D41CAF3ADE00F3C1B4 /* ui_icon_folders.png */,
+				806921941E1329DE00CB5434 /* ui_icon_instagram.png */,
 				803962D51CAF3ADE00F3C1B4 /* ui_icon_notes.png */,
 				803962D61CAF3ADE00F3C1B4 /* ui_icon_painter.png */,
 				803962D71CAF3ADE00F3C1B4 /* ui_icon_settings.png */,
@@ -403,6 +401,8 @@
 				80249CE11CD9A07F00CBE706 /* ui_tabbar_all@3x.png */,
 				80249CE21CD9A07F00CBE706 /* ui_tabbar_emoji@2x.png */,
 				80249CE31CD9A07F00CBE706 /* ui_tabbar_emoji@3x.png */,
+				806921901E13005D00CB5434 /* ui_icon_box.png */,
+				806921911E13005D00CB5434 /* ui_share_print.png */,
 				80249CE41CD9A07F00CBE706 /* ui_tabbar_web@2x.png */,
 				807896361D17695A003F2C4E /* ui_b_icon_paintbrush.png */,
 				80249CE51CD9A07F00CBE706 /* ui_tabbar_web@3x.png */,
@@ -472,8 +472,8 @@
 				8071AA561C0BA05400FD4609 /* CybrFMTest */,
 				8075EE791BA9D0E100D284AA /* CybrFotoManipTest */,
 				808D005C1B9FDB6700E020A9 /* Products */,
-				748617B2A7AE352EA01A1A12 /* Pods */,
 				EA80BE65D160F2568E3201AA /* Frameworks */,
+				BFCA82C516C466318DDBD2EE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -511,11 +511,20 @@
 			name = TumblrFeedViewController;
 			sourceTree = "<group>";
 		};
+		BFCA82C516C466318DDBD2EE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3AE1CA6BF0424B55E41F6D6B /* Pods-CybrFotoManip.debug.xcconfig */,
+				AC57F6DF36A231D6A85F2ED2 /* Pods-CybrFotoManip.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		EA80BE65D160F2568E3201AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				801AE82A1CF62B1F001E1E0F /* StoreKit.framework */,
-				0A1A645B9D7B67593B1629E6 /* Pods_CybrFotoManip.framework */,
+				4C7C8CB3E7F2C580A2C5A733 /* Pods_CybrFotoManip.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -527,12 +536,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 808D007A1B9FDB6700E020A9 /* Build configuration list for PBXNativeTarget "CybrFotoManip" */;
 			buildPhases = (
-				73AFA89F2CA814DC861D02DA /* Check Pods Manifest.lock */,
+				6A74306E012E77F05171564A /* [CP] Check Pods Manifest.lock */,
 				808D00571B9FDB6700E020A9 /* Sources */,
 				808D00591B9FDB6700E020A9 /* Resources */,
-				B5F66E9DFE14A53BA6C67940 /* Embed Pods Frameworks */,
 				57FDA4641E73E0E7A86BDFE6 /* Frameworks */,
-				ADF08BF52D4608EBC8A3CC0D /* Copy Pods Resources */,
+				E66CBBC149FA93E8D346AFB3 /* [CP] Embed Pods Frameworks */,
+				59361A9E98D28662024A2356 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -575,6 +584,7 @@
 					808D005A1B9FDB6700E020A9 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = YM28V3B39M;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -613,6 +623,7 @@
 			files = (
 				80F288211D16159200F092D9 /* TwinMarker.ttf in Resources */,
 				803963061CAF489400F3C1B4 /* ui_edit_flip.png in Resources */,
+				806921931E13005D00CB5434 /* ui_share_print.png in Resources */,
 				803962D21CAF3A5300F3C1B4 /* ui_toolbar_top.png in Resources */,
 				80EFF5F61CC419B6006C2B2D /* ui_edit_zoom.png in Resources */,
 				803962DC1CAF3ADE00F3C1B4 /* ui_icon_painter.png in Resources */,
@@ -659,6 +670,7 @@
 				801AE8391CF6C3FF001E1E0F /* rune.ttf in Resources */,
 				8071AA321C0BA01200FD4609 /* LaunchScreen.xib in Resources */,
 				803963101CAF500500F3C1B4 /* ui_edit_plus.png in Resources */,
+				806921921E13005D00CB5434 /* ui_icon_box.png in Resources */,
 				803962DD1CAF3ADE00F3C1B4 /* ui_icon_settings.png in Resources */,
 				803963051CAF489400F3C1B4 /* ui_edit_layerdown.png in Resources */,
 				80F288221D16159200F092D9 /* WithMyWoes.ttf in Resources */,
@@ -686,6 +698,7 @@
 				801E7C1F1CB89C5F009965D4 /* ui_icon_saver.png in Resources */,
 				803962D11CAF3A5300F3C1B4 /* ui_cropview_checkers@2x.png in Resources */,
 				803963131CAF500500F3C1B4 /* ui_edit_erase.png in Resources */,
+				806921951E1329DE00CB5434 /* ui_icon_instagram.png in Resources */,
 				803962F51CAF448700F3C1B4 /* ui_b_icon_save.png in Resources */,
 				801AE8351CF6C3FF001E1E0F /* illustrate-it.ttf in Resources */,
 				803962FB1CAF448700F3C1B4 /* ui_b_btn_stickers.png in Resources */,
@@ -719,29 +732,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		73AFA89F2CA814DC861D02DA /* Check Pods Manifest.lock */ = {
+		59361A9E98D28662024A2356 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		ADF08BF52D4608EBC8A3CC0D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,15 +747,62 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B5F66E9DFE14A53BA6C67940 /* Embed Pods Frameworks */ = {
+		6A74306E012E77F05171564A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CybrFotoManip-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E66CBBC149FA93E8D346AFB3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CybrFotoManip/Pods-CybrFotoManip-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/JXHTTP/JXHTTP.framework",
+				"${BUILT_PRODUCTS_DIR}/Kite-Print-SDK/KiteSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Spectacles/Spectacles.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftInAppPurchase/SwiftInAppPurchase.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TMTumblrSDK/TMTumblrSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/TWPhotoPicker/TWPhotoPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/iNotify/iNotify.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JXHTTP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KiteSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spectacles.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftInAppPurchase.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TMTumblrSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TWPhotoPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iNotify.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -911,7 +956,7 @@
 		};
 		808D007B1B9FDB6700E020A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95982C9BDCBB5C51CCE8877D /* Pods-CybrFotoManip.debug.xcconfig */;
+			baseConfigurationReference = 3AE1CA6BF0424B55E41F6D6B /* Pods-CybrFotoManip.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -923,12 +968,13 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		808D007C1B9FDB6700E020A9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A18BC1DE4CF7959F6B0C2482 /* Pods-CybrFotoManip.release.xcconfig */;
+			baseConfigurationReference = AC57F6DF36A231D6A85F2ED2 /* Pods-CybrFotoManip.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -940,6 +986,7 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

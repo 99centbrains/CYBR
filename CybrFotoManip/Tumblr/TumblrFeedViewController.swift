@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import TMTumblrSDK
-import SwiftyJSON
 
 class TumblrFeedViewController:UIViewController {
     
@@ -18,24 +17,21 @@ class TumblrFeedViewController:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        TMAPIClient.sharedInstance().OAuthConsumerKey = "c5GyLE1sxb1h7DIcAQu3Dum6ALeZGMssHuaL2XWv0es5Ayhh6S"
-        TMAPIClient.sharedInstance().posts("cybrfm.99centbrains.com", type: "photo", parameters:
-            ["limit" : 20, "offset" : 0, "filter" : "raw"]) { (result:AnyObject!, error:NSError!) -> Void in
-                
-                if (error == nil){
-                    
-                    print(result)
-               
-                }
+        
+        TMAPIClient.sharedInstance().post("cybrfm.99centbrains.com", type: "photo", parameters: ["limit" : 20, "offset" : 0, "filter" : "raw"]) { (result:Any?, error:Error?) in
+            
+            print(result)
+            
         }
+       
         
     }
     
-    @IBAction func iba_dismiss(sender:UIButton){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func iba_dismiss(_ sender:UIButton){
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     

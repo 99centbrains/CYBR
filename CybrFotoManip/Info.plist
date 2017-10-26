@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>cyber 🎨 net</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
+	<string>1.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,7 +36,7 @@
 	<key>FacebookAppID</key>
 	<string>1018917148145552</string>
 	<key>FacebookDisplayName</key>
-	<string>CybrFM</string>
+	<string>CyberNetArt</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>yoshirt</string>
@@ -61,6 +63,11 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
+			<key>amazonaws.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>bing.net</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -82,8 +89,22 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
+			<key>paypal.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>tumblr.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Use your Photos with CyberNetArt</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Greek Mythology.ttf</string>

@@ -155,9 +155,9 @@ protocol FontToolViewControllerDelegate {
     func font_toggleAlignment()
     func font_sizeUp()
     func font_sizeDown()
-    func font_chooseFont(font:UIFont)
+    func font_chooseFont(_ font:UIFont)
     func font_done()
-    func font_changeSaying(string:String)
+    func font_changeSaying(_ string:String)
 }
 
 
@@ -175,8 +175,8 @@ class FontToolViewController:UIViewController {
         super.viewDidLoad()
         
         
-        let blurbsURL = "http://labz.99centbrains.com/cybrfm/cybr_blurbs.plist"
-        let blurbsArray = NSArray(contentsOfURL: NSURL(string:blurbsURL)!)
+        let blurbsURL = "http://labz.99centbrains.com/cyber/cyber_blurbs.plist"
+        let blurbsArray = NSArray(contentsOf: URL(string:blurbsURL)!)
         if blurbsArray == nil {
             blurbs = ["404", "Internet not Available", "This app Sucks!", "Download Cybrfm.com", "Stay Wavy", "Investigate 311"]
         } else {

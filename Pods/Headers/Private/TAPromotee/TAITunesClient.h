@@ -1,1 +1,0 @@
-../../../TAPromotee/Pod/Classes/TAITunesClient.h

@@ -5,20 +5,19 @@ use_frameworks!
 target 'CybrFotoManip' do
     
     pod 'AFNetworking', '~> 2.5'
-    pod 'SwiftyJSON', '~> 2.1'
-#    pod 'JSQActivityKit'
-#    pod 'JSQWebViewController'
+    pod 'SwiftyJSON'
     pod 'TWPhotoPicker', '~> 1.0.0'
     pod 'SwiftInAppPurchase'
-    pod 'PKHUD', '~> 2.2'
+    pod 'PKHUD'
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
     
     pod 'TMTumblrSDK'
-#    
-#    pod 'PushReview'
-    pod 'TAPromotee'
+
+	pod 'Kite-Print-SDK'
+	pod 'PayPal-iOS-SDK/Core', '~> 2.12.5'
+
     pod 'iNotify'
 
     

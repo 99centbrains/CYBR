@@ -12,7 +12,7 @@ import UIKit
 
 protocol CWColorSelectViewControllerDelegate {
     
-    func colorSelectChoseColor(color:UIColor)
+    func colorSelectChoseColor(_ color:UIColor)
     func colorSelectDismiss()
     
 }
@@ -46,7 +46,7 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
 
         print(colorPallet)
         
-        ibo_collectionView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        ibo_collectionView.layer.borderColor = UIColor.lightGray.cgColor
         ibo_collectionView.layer.borderWidth = 6.0
         
 
@@ -55,42 +55,42 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
     override func viewDidLayoutSubviews() {
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSizeMake(ibo_collectionView.frame.size.width/5 - 5, ibo_collectionView.frame.size.width/5 - 5)
+        layout.itemSize = CGSize(width: ibo_collectionView.frame.size.width/5 - 5, height: ibo_collectionView.frame.size.width/5 - 5)
         layout.minimumLineSpacing = 5
         layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
-        layout.scrollDirection = .Vertical
+        layout.scrollDirection = .vertical
         
         ibo_collectionView.setCollectionViewLayout(layout, animated: false)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         //
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int{
+    func numberOfSections(in collectionView: UICollectionView) -> Int{
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colorPallet.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         print("cell")
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! ColorCellView
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ColorCellView
         
         cell.setColor(colorPallet[indexPath.item])
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ColorCellView
+        let cell = collectionView.cellForItem(at: indexPath) as! ColorCellView
         if indexPath.item == 0 {
-            delegate.colorSelectChoseColor(UIColor.clearColor())
+            delegate.colorSelectChoseColor(UIColor.clear)
         } else {
             delegate.colorSelectChoseColor(cell.backgroundColor!)
         }
@@ -105,16 +105,16 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
 
 class ColorCellView: UICollectionViewCell {
     
-    func setColor(col:String){
+    func setColor(_ col:String){
         
-        let imageData = NSData(contentsOfFile: col)
+        let imageData = try? Data(contentsOf: URL(fileURLWithPath: col))
         let img = UIImage(data:imageData!)
         let swatchColor = UIColor(patternImage:img!)
         
-        self.contentMode = .ScaleAspectFill
+        self.contentMode = .scaleAspectFill
         self.backgroundColor = swatchColor
         self.layer.cornerRadius = self.frame.size.width/2
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 2
     
     }

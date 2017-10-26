@@ -11,6 +11,41 @@ import UIKit
 import TWPhotoPicker
 import SwiftInAppPurchase
 import iNotify
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 
 class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CWStickerEditVCDelgate, PaintToolViewControllerDelegate, StickerSelectDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, FontToolViewControllerDelegate, CWColorSelectViewControllerDelegate, CFInterWebsViewControllerDelegate, CutOutPainterDelegate {
@@ -69,25 +104,25 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         let alertController = UIAlertController(
             title: "Start Over",
             message: nil,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         
         
-        alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { _ in
-            self.navigationController?.popViewControllerAnimated(true)
+        alertController.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
             iNotify.sharedInstance().checkForNotifications()
 
             })
         
 
         
-        alertController.addAction(UIAlertAction(title: "Never Mind", style: .Cancel) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        alertController.addAction(UIAlertAction(title: "Never Mind", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: { () -> Void in
                 //
             })
             })
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
         
         
         
@@ -98,19 +133,19 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     func setUpNavbar () {
         
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.changeCurrentSticker(_:)), name:"StickerTap", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changeCurrentSticker(_:)), name:NSNotification.Name(rawValue: "StickerTap"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
 
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         setUpNavbar()
 
         
         
-        ibo_canvas.ibo_stickerStage.backgroundColor = UIColor.clearColor()
+        ibo_canvas.ibo_stickerStage.backgroundColor = UIColor.clear
         if ibo_drawingView == nil {
             setupPainter()
         }
@@ -120,15 +155,15 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         }
         
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
        
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
 
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         ibo_drawingView.frame = ibo_canvas.ibo_stickerStage.frame
@@ -144,33 +179,33 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
       
     }
     
-    func iba_newDesign(sender:UIBarButtonItem){
+    func iba_newDesign(_ sender:UIBarButtonItem){
         
         let alertController = UIAlertController(
             title: "Create New",
             message: "This will clear your current design. Are you sure you want to continue?",
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         
-        alertController.addAction(UIAlertAction(title: "Create New", style: .Default) { _ in
-                self.navigationController?.popViewControllerAnimated(true)
+        alertController.addAction(UIAlertAction(title: "Create New", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
         })
         
-        alertController.addAction(UIAlertAction(title: "No Thanks", style: .Cancel ) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        alertController.addAction(UIAlertAction(title: "No Thanks", style: .cancel ) { _ in
+            alertController.dismiss(animated: true, completion: { () -> Void in
                 //
             })
         })
         
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
 
         
         
     }
 
     func foto_save(){
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
         
         if ibo_vcColorSelect != nil {
@@ -186,10 +221,10 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
 
             //AssetManager().saveLocalImage(image)
             if self.ibo_shareVC == nil {
-                self.ibo_shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CWSharePopUpViewController") as! CWSharePopUpViewController
+                self.ibo_shareVC = self.storyboard?.instantiateViewController(withIdentifier: "sb_CWSharePopUpViewController") as! CWSharePopUpViewController
             }
             self.ibo_shareVC.userImage = UIImage(data: UIImagePNGRepresentation(image)!)
-            self.ibo_shareVC.parent = self
+            self.ibo_shareVC.vcparent = self
             self.ibo_shareVC.view.frame = self.view.frame
             self.view.addSubview(self.ibo_shareVC.view)
             
@@ -202,37 +237,37 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
         
         
-    func renderImage(callback: (UIImage) -> ()) {
+    func renderImage(_ callback: @escaping (UIImage) -> ()) {
       
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(0.2 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             
             UIGraphicsBeginImageContextWithOptions(self.ibo_canvas.view.frame.size, false, 0.0)
-            self.ibo_canvas.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+            self.ibo_canvas.view.layer.render(in: UIGraphicsGetCurrentContext()!)
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            callback(image)
+            callback(image!)
         }
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         print("This Segue \(segue.identifier)")
         
         if segue.identifier == "sb_CanvasViewController"{
-            ibo_canvas = segue.destinationViewController as! CanvasViewController
+            ibo_canvas = segue.destination as! CanvasViewController
         }
         
         if segue.identifier == "sb_CanvasToolContViewController" {
             
-            ibo_container = segue.destinationViewController as! CanvasToolContViewController
+            ibo_container = segue.destination as! CanvasToolContViewController
             
             
-            ibo_toolBar = storyboard?.instantiateViewControllerWithIdentifier("sb_CWToolBarViewController") as! CWToolBarViewController
+            ibo_toolBar = storyboard?.instantiateViewController(withIdentifier: "sb_CWToolBarViewController") as! CWToolBarViewController
             ibo_container.view.addSubview(ibo_toolBar.view)
             
-            ibo_toolBar.view.frame = CGRectMake(0, 0, ibo_container.view.frame.width, ibo_container.view.frame.height)
+            ibo_toolBar.view.frame = CGRect(x: 0, y: 0, width: ibo_container.view.frame.width, height: ibo_container.view.frame.height)
             ibo_toolBar.delegate = self
 
         }
@@ -244,10 +279,10 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
        
     
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CFInterWebsViewController") as! CFInterWebsViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sb_CFInterWebsViewController") as! CFInterWebsViewController
         let nav = UINavigationController(rootViewController: vc)
         vc.delegate = self
-        self.presentViewController(nav, animated: true, completion: nil)
+        self.present(nav, animated: true, completion: nil)
     }
     
     /*
@@ -261,7 +296,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         let alertController = UIAlertController(
             title: "Choose Image",
             message: nil,
-            preferredStyle: .ActionSheet
+            preferredStyle: .actionSheet
         )
         
         let imagePicker = UIImagePickerController()
@@ -269,18 +304,18 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         imagePicker.allowsEditing = false
         imagePicker.delegate = self
         
-        alertController.addAction(UIAlertAction(title: "Camera", style: .Default) { _ in
-            imagePicker.sourceType = .Camera
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Camera", style: .default) { _ in
+            imagePicker.sourceType = .camera
+            self.present(imagePicker, animated: true, completion: nil)
             })
         
-        alertController.addAction(UIAlertAction(title: "Photo Library", style: .Default) { _ in
-            imagePicker.sourceType = .PhotoLibrary
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Photo Library", style: .default) { _ in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
             })
         
-        alertController.addAction(UIAlertAction(title: "Never Mind", style: .Cancel) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        alertController.addAction(UIAlertAction(title: "Never Mind", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: { () -> Void in
                 //
             })
             })
@@ -291,7 +326,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
 //        }
         
         
-        presentViewController(alertController, animated: true) { () -> Void in
+        present(alertController, animated: true) { () -> Void in
             //
         }
         
@@ -299,9 +334,9 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        dismissViewControllerAnimated(true, completion: { () -> Void in
+        dismiss(animated: true, completion: { () -> Void in
             
             
             
@@ -311,10 +346,10 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
                     
                     if self.boolBackgroundImage == false {
                         
-                        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CutOutPainter") as! CutOutPainter
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sb_CutOutPainter") as! CutOutPainter
                         vc.delegate = self
                         vc.paintedImage = pickedImage
-                        self.presentViewController(vc, animated: true, completion: nil)
+                        self.present(vc, animated: true, completion: nil)
                         
                     } else {
                         
@@ -333,28 +368,28 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
     }
     
-    func cutOutDidFinish(img:UIImage, vc:CutOutPainter){
+    func cutOutDidFinish(_ img:UIImage, vc:CutOutPainter){
         
         if currentSticker != nil {
             currentSticker.image = img
-            vc.dismissViewControllerAnimated(true, completion: nil)
+            vc.dismiss(animated: true, completion: nil)
 
             return
         }
         
         self.stickerDidFinishChoosing(img)
-        vc.dismissViewControllerAnimated(true, completion: nil)
+        vc.dismiss(animated: true, completion: nil)
     
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController){
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
     }
     
 
-    func letUserCreateSticker(img:UIImage!){
+    func letUserCreateSticker(_ img:UIImage!){
         
         self.stickerDidFinishChoosing(img)
         return
@@ -365,7 +400,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     
     func tool_clearAll(){
-        ibo_canvas.view.backgroundColor = UIColor.clearColor()
+        ibo_canvas.view.backgroundColor = UIColor.clear
         
         for v in ibo_canvas.ibo_stickerStage.subviews {
             v.removeFromSuperview()
@@ -389,7 +424,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         let alertController = UIAlertController(
             title: "Background Image",
             message: nil,
-            preferredStyle: .ActionSheet
+            preferredStyle: .actionSheet
         )
         
         let imagePicker = UIImagePickerController()
@@ -397,31 +432,31 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         imagePicker.allowsEditing = false
         imagePicker.delegate = self
         
-        alertController.addAction(UIAlertAction(title: "Camera", style: .Default) { _ in
-            imagePicker.sourceType = .Camera
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Camera", style: .default) { _ in
+            imagePicker.sourceType = .camera
+            self.present(imagePicker, animated: true, completion: nil)
             })
         
-        alertController.addAction(UIAlertAction(title: "Photo Library", style: .Default) { _ in
-            imagePicker.sourceType = .PhotoLibrary
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Photo Library", style: .default) { _ in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
             })
         
         if self.ibo_canvas.iba_userImage.image != nil {
-            alertController.addAction(UIAlertAction(title: "Clear Image", style: .Default) { _ in
-                imagePicker.sourceType = .PhotoLibrary
+            alertController.addAction(UIAlertAction(title: "Clear Image", style: .default) { _ in
+                imagePicker.sourceType = .photoLibrary
                     self.ibo_canvas.iba_userImage.image = nil
                 })
         }
         
-        alertController.addAction(UIAlertAction(title: "Never Mind", style: .Cancel) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        alertController.addAction(UIAlertAction(title: "Never Mind", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: { () -> Void in
                 //
             })
             })
         
         
-        presentViewController(alertController, animated: true) { () -> Void in
+        present(alertController, animated: true) { () -> Void in
             //
         }
         
@@ -438,12 +473,14 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         let stickerNC = stickerBored.instantiateInitialViewController() as! UINavigationController
         
-        let viewStickers = stickerBored.instantiateViewControllerWithIdentifier("sb_StickerSectionViewController") as! StickerSectionViewController
+        let viewStickers = stickerBored.instantiateViewController(withIdentifier: "sb_StickerSectionViewController") as! StickerSectionViewController
         viewStickers.delegate = self
         viewStickers.title = "Stickers"
         let stickerdir = [
             "/stickers/com.99centbrains.cybrfm.free00/",
             "/stickers/com.99centbrains.cybrfm.free01/",
+            "/stickers/com.99centbrains.weouthere/",
+            "/stickers/com.99centbrains.stickervibe/",
             "/stickers/com.99centbrains.cybrfm.icons01/",
             "/stickers/com.99centbrains.cybrfm.icons02/",
             "/stickers/com.99centbrains.cybrfm.3dword/",
@@ -466,7 +503,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         
         //////////
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CFInterWebsViewController") as! CFInterWebsViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sb_CFInterWebsViewController") as! CFInterWebsViewController
         
         vc.delegate = self
         let tabbar_tumblr = UITabBarItem(title: "Tumblr", image: UIImage(named:"ui_tabbar_web"), tag: 3)
@@ -478,24 +515,24 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         ////////
         let tabbar = UITabBarController()
         tabbar.setViewControllers([stickerNC, webNav], animated: true)
-                tabbar.tabBar.tintColor = UIColor.darkGrayColor()
-        tabbar.tabBar.barTintColor = UIColor.whiteColor()
+                tabbar.tabBar.tintColor = UIColor.darkGray
+        tabbar.tabBar.barTintColor = UIColor.white
         
-        presentViewController(tabbar, animated: true) { () -> Void in
+        present(tabbar, animated: true) { () -> Void in
  
         }
  
     }
     
-    func stickerDidFinishChoosing(img:UIImage){
+    func stickerDidFinishChoosing(_ img:UIImage){
         
         print("dif finish")
-        self.dismissViewControllerAnimated(true) { () -> Void in }
+        self.dismiss(animated: true) { () -> Void in }
         
         
         if ibo_emojiPainter != nil {
             self.ibo_emojiPaintView.image = img
-            ibo_emojiPainter.ibo_buttonPicker.setImage(img, forState: .Normal)
+            ibo_emojiPainter.ibo_buttonPicker.setImage(img, for: UIControlState())
             return
         }
         
@@ -507,27 +544,27 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             currentSticker = nil
         }
         
-        let stickerImage = img.imageByTrimmingTransparentPixels()
+        let stickerImage = img.trimmingTransparentPixels()
 
         
         var imageSize:CGSize
-        if stickerImage.size.width < stickerImage.size.height {
+        if stickerImage?.size.width < stickerImage?.size.height {
             
-            imageSize = CGSizeMake(stickerImage.size.width/stickerImage.size.height * 300, 300)
+            imageSize = CGSize(width: (stickerImage?.size.width)!/(stickerImage?.size.height)! * 300, height: 300)
             
         } else {
             
-            imageSize = CGSizeMake(300, stickerImage.size.height/stickerImage.size.width * 300)
+            imageSize = CGSize(width: 300, height: (stickerImage?.size.height)!/(stickerImage?.size.width)! * 300)
             
         }
         
         
-        let stickyImage = StickyImageView(frame: CGRectMake(0, 0, imageSize.width, imageSize.height))
-        stickyImage.stickyKind = StickyImageType.Image
+        let stickyImage = StickyImageView(frame: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+        stickyImage.stickyKind = StickyImageType.image
         stickyImage.image = stickerImage
         stickyImage.center = ibo_canvas.ibo_stickerStage.center
         stickyImage.clipsToBounds = true
-        stickyImage.contentMode = UIViewContentMode.ScaleAspectFit
+        stickyImage.contentMode = UIViewContentMode.scaleAspectFit
         
         currentSticker = stickyImage
         stickyImage.tag = ibo_canvas.ibo_stickerStage.subviews.count + 1
@@ -536,7 +573,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         setBorderON()
     }
     
-    func changeCurrentSticker(notification: NSNotification){
+    func changeCurrentSticker(_ notification: Notification){
         
         setBorderOFF()
         if let tappedObject = notification.object as? StickyImageView {
@@ -549,16 +586,16 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     func setBorderON(){
     
-        currentSticker.layer.borderColor = UIColor.magentaColor().CGColor
+        currentSticker.layer.borderColor = UIColor.magenta.cgColor
         currentSticker.layer.borderWidth = 2
-        currentSticker.layer.backgroundColor = UIColor(white: 1.0, alpha: 0.5).CGColor
+        currentSticker.layer.backgroundColor = UIColor(white: 1.0, alpha: 0.5).cgColor
         
         if ibo_editBar == nil {
             
-            ibo_editBar = storyboard?.instantiateViewControllerWithIdentifier("sb_CWStickerEditViewController") as! CWStickerEditViewController
+            ibo_editBar = storyboard?.instantiateViewController(withIdentifier: "sb_CWStickerEditViewController") as! CWStickerEditViewController
             ibo_container.view.addSubview(ibo_editBar.view)
-            ibo_canvas.ibo_stickerStage.userInteractionEnabled = true
-            ibo_editBar.view.frame = CGRectMake(0, 0, ibo_container.view.frame.size.width, ibo_container.view.frame.size.height)
+            ibo_canvas.ibo_stickerStage.isUserInteractionEnabled = true
+            ibo_editBar.view.frame = CGRect(x: 0, y: 0, width: ibo_container.view.frame.size.width, height: ibo_container.view.frame.size.height)
             ibo_editBar.delegate = self
             
         }
@@ -598,7 +635,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         self.view.addGestureRecognizer(rotateGesture)
         self.view.addGestureRecognizer(longTapGesture)
         
-        ibo_canvas.view.userInteractionEnabled = true
+        ibo_canvas.view.isUserInteractionEnabled = true
         
     }
     
@@ -612,16 +649,16 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     
     //MARK: - Gesture Handlers
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
     var lastPinchScale: CGFloat = 1.0
     var currentlyScaling = false
     
-    func stickyPinch(recognizer: UIPinchGestureRecognizer) {
+    func stickyPinch(_ recognizer: UIPinchGestureRecognizer) {
         if let sticker = currentSticker {
-            if recognizer.state == .Ended {
+            if recognizer.state == .ended {
                 currentlyScaling = false
                 lastPinchScale = 1.0
                 return
@@ -633,7 +670,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             let newScale = 1.0 - (lastPinchScale - recognizer.scale)
             
             let currentTransform:CGAffineTransform = currentSticker.transform
-            let newTransform = CGAffineTransformScale(currentTransform, newScale, newScale)
+            let newTransform = currentTransform.scaledBy(x: newScale, y: newScale)
             
             sticker.transform = newTransform
             
@@ -645,11 +682,11 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     var currentlyRotating:Bool = false
     var lastRotation: CGFloat = 0
-    func stickyRotate(recognizer: UIRotationGestureRecognizer) {
+    func stickyRotate(_ recognizer: UIRotationGestureRecognizer) {
         if let sticker = currentSticker {
             
             
-            if recognizer.state == .Ended {
+            if recognizer.state == .ended {
                 
                 currentlyRotating = false
                 lastRotation = 0.0
@@ -661,7 +698,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             let newRotation = 0.0 - (lastRotation - recognizer.rotation)
             
             let currentTransform:CGAffineTransform = currentSticker.transform
-            let newTransform = CGAffineTransformRotate(currentTransform, newRotation)
+            let newTransform = currentTransform.rotated(by: newRotation)
             
             sticker.transform = newTransform
             lastRotation = recognizer.rotation
@@ -670,31 +707,31 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     
     var lastMoveCenter = CGPoint(x: 0, y: 0)
-    func stickyMove(recognizer: UIPanGestureRecognizer) {
+    func stickyMove(_ recognizer: UIPanGestureRecognizer) {
         
         if let sticker = currentSticker {
             
-            ibo_canvas.ibo_stickerStage.bringSubviewToFront(sticker)
+            ibo_canvas.ibo_stickerStage.bringSubview(toFront: sticker)
             
-            var newCenter = recognizer.translationInView(self.view)
+            var newCenter = recognizer.translation(in: self.view)
 
-            if recognizer.state == .Began {
+            if recognizer.state == .began {
                 
-                lastMoveCenter = CGPointMake(currentSticker.center.x, currentSticker.center.y)
+                lastMoveCenter = CGPoint(x: currentSticker.center.x, y: currentSticker.center.y)
             
             }
             
-            newCenter = CGPointMake(lastMoveCenter.x + newCenter.x, lastMoveCenter.y + newCenter.y)
+            newCenter = CGPoint(x: lastMoveCenter.x + newCenter.x, y: lastMoveCenter.y + newCenter.y)
             sticker.center = newCenter
 
         }
     }
     
-    func stickyLongTap(recognizer: UIPanGestureRecognizer) {
+    func stickyLongTap(_ recognizer: UIPanGestureRecognizer) {
        //return
         
         if let sticker = currentSticker {
-            sticker.superview?.bringSubviewToFront(sticker)
+            sticker.superview?.bringSubview(toFront: sticker)
         }
         
     }
@@ -712,13 +749,13 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         setBorderOFF()
         
-        newLabel = UITextView(frame: CGRectMake(0, 64, ibo_canvas.view.frame.size.width, ibo_canvas.view.frame.size.width/3 * 2))
-        newLabel.backgroundColor = UIColor.clearColor()
+        newLabel = UITextView(frame: CGRect(x: 0, y: 64, width: ibo_canvas.view.frame.size.width, height: ibo_canvas.view.frame.size.width/3 * 2))
+        newLabel.backgroundColor = UIColor.clear
         newLabel.text = "Type to Edit"
         newLabel.font = UIFont(name: "ArialRoundedMTBold", size: 64)
-        newLabel.textAlignment = .Center
+        newLabel.textAlignment = .center
         newLabel.clearsOnInsertion = true
-        newLabel.autocorrectionType = .No
+        newLabel.autocorrectionType = .no
         newLabel.delegate = self
         newLabel.becomeFirstResponder()
 
@@ -731,18 +768,18 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
 
     }
     
-    func keyboardWillShow(sender: NSNotification) {
+    func keyboardWillShow(_ sender: Notification) {
         
         print("Keybaord Up")
         
         if let userInfo = sender.userInfo {
-            if let keyboardSize = userInfo[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue {
+            if let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as AnyObject).cgRectValue {
     
                 if ibo_tool_fontEdit == nil {
-                    ibo_tool_fontEdit = storyboard?.instantiateViewControllerWithIdentifier("seg_FontToolViewController") as! FontToolViewController
+                    ibo_tool_fontEdit = storyboard?.instantiateViewController(withIdentifier: "seg_FontToolViewController") as! FontToolViewController
                     ibo_tool_fontEdit.delegate = self
                     let height = self.view.frame.size.height - keyboardSize.size.height - 50
-                    ibo_tool_fontEdit.view.frame = CGRectMake(0, height, self.view.frame.size.width, 50)
+                    ibo_tool_fontEdit.view.frame = CGRect(x: 0, y: height, width: self.view.frame.size.width, height: 50)
                     self.view.addSubview(ibo_tool_fontEdit.view)
                 }
                 
@@ -765,20 +802,20 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             
             newLabel.resignFirstResponder()
             
-            newLabel.backgroundColor = UIColor.clearColor()
-            newLabel.frame = CGRectMake(0, 0, newLabel.contentSize.width, newLabel.contentSize.height)
+            newLabel.backgroundColor = UIColor.clear
+            newLabel.frame = CGRect(x: 0, y: 0, width: newLabel.contentSize.width, height: newLabel.contentSize.height)
             
             
             UIGraphicsBeginImageContextWithOptions(newLabel.textInputView.frame.size, false, 4)
-            newLabel.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+            newLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            self.textTyperDidFinishPicking(image)
+            self.textTyperDidFinishPicking(image!)
             
             //Clean Up
             newLabel.removeFromSuperview()
             newLabel.delegate = nil
-            newLabel.userInteractionEnabled = false
+            newLabel.isUserInteractionEnabled = false
             newLabel = nil
             
             
@@ -801,14 +838,14 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         
         switch currentAlign {
             
-        case NSTextAlignment.Left:
-            newLabel.textAlignment = NSTextAlignment.Right
+        case NSTextAlignment.left:
+            newLabel.textAlignment = NSTextAlignment.right
             
-        case NSTextAlignment.Center:
-            newLabel.textAlignment = NSTextAlignment.Left
+        case NSTextAlignment.center:
+            newLabel.textAlignment = NSTextAlignment.left
             
-        case NSTextAlignment.Right:
-            newLabel.textAlignment = NSTextAlignment.Center
+        case NSTextAlignment.right:
+            newLabel.textAlignment = NSTextAlignment.center
             //
         
         default: break
@@ -827,17 +864,17 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         newLabel.font = UIFont(name: newLabel.font!.fontName, size: newLabel.font!.pointSize - 10)
     
     }
-    func font_chooseFont(font:UIFont){
+    func font_chooseFont(_ font:UIFont){
         
         newLabel.font = UIFont(name: font.fontName, size: newLabel.font!.pointSize)
 
     }
     
-    func font_changeSaying(string:String){
+    func font_changeSaying(_ string:String){
         newLabel.text = string
     }
     
-    func textTyperDidFinishPicking(img:UIImage){
+    func textTyperDidFinishPicking(_ img:UIImage){
        
         
         if ibo_vcColorSelect != nil {
@@ -849,29 +886,29 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             currentSticker = nil
         }
         
-        let textImage = img.imageByTrimmingTransparentPixels()
+        let textImage = img.trimmingTransparentPixels()
         
         var imageSize:CGSize
-        if textImage.size.width < textImage.size.height {
+        if textImage?.size.width < textImage?.size.height {
             
-            imageSize = CGSizeMake(textImage.size.width/textImage.size.height * 300, 300)
+            imageSize = CGSize(width: (textImage?.size.width)!/(textImage?.size.height)! * 300, height: 300)
         
         } else {
             
-            imageSize = CGSizeMake(300, textImage.size.height/textImage.size.width * 300)
+            imageSize = CGSize(width: 300, height: (textImage?.size.height)!/(textImage?.size.width)! * 300)
             
         }
         
-        let stickyImage = StickyImageView(frame: CGRectMake(0, 0, imageSize.width, imageSize.height))
-        stickyImage.stickyKind = StickyImageType.Text
+        let stickyImage = StickyImageView(frame: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+        stickyImage.stickyKind = StickyImageType.text
         stickyImage.image = textImage
         stickyImage.center = ibo_canvas.ibo_stickerStage.center
         stickyImage.clipsToBounds = true
-        stickyImage.contentMode = UIViewContentMode.ScaleAspectFit
+        stickyImage.contentMode = UIViewContentMode.scaleAspectFit
 
-        stickyImage.layer.shadowColor = UIColor.cyanColor().CGColor
+        stickyImage.layer.shadowColor = UIColor.cyan.cgColor
         stickyImage.layer.shadowRadius = 0
-        stickyImage.layer.shadowOffset = CGSizeMake(3, 3)
+        stickyImage.layer.shadowOffset = CGSize(width: 3, height: 3)
         stickyImage.layer.shadowOpacity = 1
         
         currentSticker = stickyImage
@@ -889,11 +926,11 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     func tool_paintSelect(){
         
-        ibo_toolPainter = storyboard?.instantiateViewControllerWithIdentifier("seg_PaintToolViewController") as! PaintToolViewController
+        ibo_toolPainter = storyboard?.instantiateViewController(withIdentifier: "seg_PaintToolViewController") as! PaintToolViewController
         ibo_container.view.addSubview(ibo_toolPainter.view)
-        ibo_canvas.ibo_stickerStage.userInteractionEnabled = false
-        ibo_drawingView.userInteractionEnabled = true
-        ibo_toolPainter.view.frame = CGRectMake(0, 0, ibo_container.view.frame.size.width, ibo_container.view.frame.size.height)
+        ibo_canvas.ibo_stickerStage.isUserInteractionEnabled = false
+        ibo_drawingView.isUserInteractionEnabled = true
+        ibo_toolPainter.view.frame = CGRect(x: 0, y: 0, width: ibo_container.view.frame.size.width, height: ibo_container.view.frame.size.height)
         ibo_toolPainter.delegate = self
 
         removeGestures()
@@ -903,14 +940,14 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     func tool_paintMoji(){
                
-        ibo_emojiPainter = storyboard?.instantiateViewControllerWithIdentifier("seg_EmojiToolViewController") as! PaintToolViewController
+        ibo_emojiPainter = storyboard?.instantiateViewController(withIdentifier: "seg_EmojiToolViewController") as! PaintToolViewController
         ibo_container.view.addSubview(ibo_emojiPainter.view)
-        ibo_canvas.ibo_stickerStage.userInteractionEnabled = false
-        ibo_emojiPaintView.userInteractionEnabled = true
-        ibo_emojiPainter.view.frame = CGRectMake(0, 0, ibo_container.view.frame.size.width, ibo_container.view.frame.size.height)
+        ibo_canvas.ibo_stickerStage.isUserInteractionEnabled = false
+        ibo_emojiPaintView.isUserInteractionEnabled = true
+        ibo_emojiPainter.view.frame = CGRect(x: 0, y: 0, width: ibo_container.view.frame.size.width, height: ibo_container.view.frame.size.height)
         ibo_emojiPainter.delegate = self
         
-        ibo_emojiPainter.ibo_buttonPicker.setImage(ibo_emojiPaintView.image, forState: .Normal)
+        ibo_emojiPainter.ibo_buttonPicker.setImage(ibo_emojiPaintView.image, for: UIControlState())
         
         removeGestures()
     
@@ -925,18 +962,18 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     var paintSize:CGFloat = 25.0
     
-    func paintSizeAnimate(size:CGFloat, isPainter:Bool){
+    func paintSizeAnimate(_ size:CGFloat, isPainter:Bool){
         
         print("paintSizeAnimate")
         
-        let sampleView = UIImageView(frame: CGRectMake(0, 0, size, size))
+        let sampleView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
         sampleView.center = ibo_canvas.view.center
         
         if isPainter {
             
             sampleView.backgroundColor = ibo_drawingView.lineColor
             sampleView.layer.cornerRadius = size/2
-            sampleView.layer.borderColor = UIColor.blackColor().CGColor
+            sampleView.layer.borderColor = UIColor.black.cgColor
             sampleView.layer.borderWidth = 2.0
             
         } else {
@@ -949,7 +986,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         ibo_canvas.view.addSubview(sampleView)
         
         
-        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
            
             sampleView.alpha = 0
         
@@ -967,27 +1004,27 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     func setupPainter(){
         
-        ibo_drawingView = SwiftDrawView(frame: CGRectMake(0, 0, ibo_canvas.view.frame.width, ibo_canvas.view.frame.height))
+        ibo_drawingView = SwiftDrawView(frame: CGRect(x: 0, y: 0, width: ibo_canvas.view.frame.width, height: ibo_canvas.view.frame.height))
         ibo_canvas.view.insertSubview(ibo_drawingView, belowSubview: ibo_canvas.ibo_stickerStage)
         ibo_drawingView.lineWidth = paintSize
-        ibo_drawingView.userInteractionEnabled = false
+        ibo_drawingView.isUserInteractionEnabled = false
         
 //        ibo_drawingView.layer.shadowColor = UIColor.cyanColor().CGColor
 //        ibo_drawingView.layer.shadowOffset = CGSizeMake(0, 0)
 //        ibo_drawingView.layer.shadowRadius = 10
 //        ibo_drawingView.layer.shadowOpacity = 1.0
         
-        ibo_emojiPaintView = EmojiDrawView(frame: CGRectMake(0, 0, ibo_canvas.view.frame.width, ibo_canvas.view.frame.height))
+        ibo_emojiPaintView = EmojiDrawView(frame: CGRect(x: 0, y: 0, width: ibo_canvas.view.frame.width, height: ibo_canvas.view.frame.height))
         ibo_canvas.view.insertSubview(ibo_emojiPaintView, belowSubview: ibo_canvas.ibo_stickerStage)
         ibo_emojiPaintView.brushSize = paintSize
-        ibo_emojiPaintView.userInteractionEnabled = false
+        ibo_emojiPaintView.isUserInteractionEnabled = false
         
         print(ibo_canvas.view.frame)
         print(ibo_drawingView.frame)
         
     }
     
-    func paint_setSizeUP(isPaint:Bool){
+    func paint_setSizeUP(_ isPaint:Bool){
         
         var currentsize = ibo_emojiPaintView.brushSize
         
@@ -995,32 +1032,32 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
             currentsize = 0
         }
         
-        currentsize = currentsize + 25.0
+        currentsize = currentsize! + 25.0
         
-        paintSizeAnimate(currentsize, isPainter: isPaint)
+        paintSizeAnimate(currentsize!, isPainter: isPaint)
     
     }
-    func paint_setSizeDown(isPaint:Bool){
+    func paint_setSizeDown(_ isPaint:Bool){
         
         var currentsize = ibo_emojiPaintView.brushSize
-        currentsize = currentsize - 25.0
+        currentsize = currentsize! - 25.0
         
         if currentsize <= 0 {
             currentsize = 25
         }
         
-        paintSizeAnimate(currentsize, isPainter: isPaint)
+        paintSizeAnimate(currentsize!, isPainter: isPaint)
     
     }
     
-    func paint_setSize(size:CGFloat){
+    func paint_setSize(_ size:CGFloat){
         
         ibo_emojiPaintView.brushSize = size
         ibo_drawingView.lineWidth = size
 
     }
     
-    func paint_toggleEraser(state:Bool){
+    func paint_toggleEraser(_ state:Bool){
         
         if ibo_drawingView.eraserMode {
             ibo_drawingView.eraserMode = false
@@ -1034,7 +1071,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
        showColorSelector()
     }
     
-    func paint_setImage(img:UIImage){
+    func paint_setImage(_ img:UIImage){
         
         
         ibo_emojiPaintView.image = img
@@ -1083,9 +1120,9 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     func paint_dismiss(){
         
-        ibo_drawingView.userInteractionEnabled = false
-        ibo_emojiPaintView.userInteractionEnabled = false
-        ibo_canvas.ibo_stickerStage.userInteractionEnabled = true
+        ibo_drawingView.isUserInteractionEnabled = false
+        ibo_emojiPaintView.isUserInteractionEnabled = false
+        ibo_canvas.ibo_stickerStage.isUserInteractionEnabled = true
         
         createGestures()
         
@@ -1142,12 +1179,12 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
     func edit_copy(){
         let oldSticker = currentSticker
-        let stickerPoint = oldSticker.center//OLD CENTER
+        let stickerPoint = oldSticker?.center//OLD CENTER
         
         stickerDidFinishChoosing(currentSticker.image!)
         
-        currentSticker.center = CGPointMake(stickerPoint.x + 10, stickerPoint.y + 10)
-        currentSticker.transform = oldSticker.transform
+        currentSticker.center = CGPoint(x: (stickerPoint?.x)! + 10, y: (stickerPoint?.y)! + 10)
+        currentSticker.transform = (oldSticker?.transform)!
         
     
     }
@@ -1156,8 +1193,8 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         if let stickerViews = ibo_canvas.ibo_stickerStage.subviews as? [StickyImageView] {
             
             //swift 2.0 change this ~ let indexOfA = arr.indexOf("a") // 0
-            let stickerIndex = stickerViews.indexOf(currentSticker)
-            ibo_canvas.ibo_stickerStage.exchangeSubviewAtIndex(stickerIndex!, withSubviewAtIndex: stickerIndex! + 1)
+            let stickerIndex = stickerViews.index(of: currentSticker)
+            ibo_canvas.ibo_stickerStage.exchangeSubview(at: stickerIndex!, withSubviewAt: stickerIndex! + 1)
             
         }
         
@@ -1168,8 +1205,8 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         if let stickerViews = ibo_canvas.ibo_stickerStage.subviews as? [StickyImageView] {
   
             //swift 2.0 change this ~ let indexOfA = arr.indexOf("a") // 0
-            let stickerIndex = stickerViews.indexOf(currentSticker)
-            ibo_canvas.ibo_stickerStage.exchangeSubviewAtIndex(stickerIndex!, withSubviewAtIndex: stickerIndex! - 1)
+            let stickerIndex = stickerViews.index(of: currentSticker)
+            ibo_canvas.ibo_stickerStage.exchangeSubview(at: stickerIndex!, withSubviewAt: stickerIndex! - 1)
         
         }
 
@@ -1180,19 +1217,19 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     func edit_reflect(){
         
         var oldSticker = currentSticker
-        let stickerPoint = oldSticker.center//OLD CENTER
+        let stickerPoint = oldSticker?.center//OLD CENTER
         
         //GET OLD ROTATION to DEGREE FROM RADIAN
         let zKeyPath = "layer.presentationLayer.transform.rotation.z"
-        let imageRotation = (oldSticker.valueForKeyPath(zKeyPath) as? NSNumber)?.floatValue ?? 0.0
+        let imageRotation = (oldSticker?.value(forKeyPath: zKeyPath) as? NSNumber)?.floatValue ?? 0.0
         let degreesRotated = radiansToDegrees(Double(imageRotation))
 
         //MAKE NEW STICKER
-        stickerDidFinishChoosing(oldSticker.image!)
+        stickerDidFinishChoosing((oldSticker?.image!)!)
         
         // COPY TO OPOSITE X
-        let newXPoint = ibo_canvas.ibo_stickerStage.frame.size.width - stickerPoint.x
-        currentSticker.center = CGPointMake(newXPoint, stickerPoint.y)
+        let newXPoint = ibo_canvas.ibo_stickerStage.frame.size.width - (stickerPoint?.x)!
+        currentSticker.center = CGPoint(x: newXPoint, y: (stickerPoint?.y)!)
         currentSticker.flipSticker()
 
         //REVERSE ROTATION
@@ -1204,8 +1241,8 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
         }
         
         //APPLY TRANSFORMS
-        currentSticker.transform = CGAffineTransformScale(oldSticker.transform, 1, 1)
-        currentSticker.transform = CGAffineTransformRotate(currentSticker.transform, degreesToRadians(newRotation))
+        currentSticker.transform = (oldSticker?.transform.scaledBy(x: 1, y: 1))!
+        currentSticker.transform = currentSticker.transform.rotated(by: degreesToRadians(newRotation))
         
         oldSticker = nil
         
@@ -1214,21 +1251,21 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     
     func edit_editImage() {
         
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CutOutPainter") as! CutOutPainter
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sb_CutOutPainter") as! CutOutPainter
         vc.delegate = self
         vc.paintedImage = self.currentSticker.image
-        self.presentViewController(vc, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
         
         
         
     }
     
-    func degreesToRadians (val:CGFloat) -> CGFloat {
+    func degreesToRadians (_ val:CGFloat) -> CGFloat {
         let rad = val * CGFloat((M_PI / 180.0))
         return CGFloat(rad)
     }
     
-    func radiansToDegrees (value:Double) -> CGFloat {
+    func radiansToDegrees (_ value:Double) -> CGFloat {
         let rad = value * 180.0 / M_PI
          return CGFloat(rad)
     }
@@ -1245,14 +1282,14 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     func showColorSelector(){
         
         ibo_vcColorSelect = CWColorSelectViewController()
-        ibo_vcColorSelect = storyboard?.instantiateViewControllerWithIdentifier("sb_CWColorSelectViewController") as! CWColorSelectViewController
+        ibo_vcColorSelect = storyboard?.instantiateViewController(withIdentifier: "sb_CWColorSelectViewController") as! CWColorSelectViewController
         ibo_vcColorSelect.delegate = self
         ibo_vcColorSelect.view.frame = self.view.frame
         self.view.addSubview(ibo_vcColorSelect.view)
         
     }
     
-    func colorSelectChoseColor(color:UIColor){
+    func colorSelectChoseColor(_ color:UIColor){
 
         if newLabel != nil {
             
@@ -1286,7 +1323,7 @@ class CWPlayViewController:UIViewController, CWToolBarViewControllerDelegate, CW
     }
 
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     

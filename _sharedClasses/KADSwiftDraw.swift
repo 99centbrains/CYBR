@@ -39,7 +39,7 @@ class EmojiDrawView:UIView {
         }
     }
     
-    func setupImage(img:UIImage){
+    func setupImage(_ img:UIImage){
         
         image = img
     
@@ -47,42 +47,42 @@ class EmojiDrawView:UIView {
     
     func setupView() {
         brushSize = 50
-        backgroundColor = UIColor.clearColor()
-        opaque = false
+        backgroundColor = UIColor.clear
+        isOpaque = false
     }
     
     
-    override func touchesBegan(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches:  Set<UITouch>, with event: UIEvent?) {
         
         let touch = touches.first
-        drawBrush(touch!.locationInView(self))
+        drawBrush(touch!.location(in: self))
         
     }
     
-    override func touchesMoved(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches:  Set<UITouch>, with event: UIEvent?) {
         
         let touch = touches.first
-        drawBrush(touch!.locationInView(self))
+        drawBrush(touch!.location(in: self))
     
     }
     
-    override func touchesEnded(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches:  Set<UITouch>, with event: UIEvent?) {
         
         drawBitmap()
         
     }
     
-    override func touchesCancelled(touches:  Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches:  Set<UITouch>, with event: UIEvent?) {
         
         drawBitmap()
        
     }
     
-    func drawBrush(point:CGPoint){
+    func drawBrush(_ point:CGPoint){
         
         let imageView = UIImageView()
-        imageView.frame = CGRectMake(0, 0, brushSize, brushSize)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.frame = CGRect(x: 0, y: 0, width: brushSize, height: brushSize)
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         imageView.image = image
         imageView.center = point
         
@@ -94,7 +94,7 @@ class EmojiDrawView:UIView {
         
         print("DONE \(self.frame)")
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0.0)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
         let cache = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -104,7 +104,7 @@ class EmojiDrawView:UIView {
         }
         
             let someIMGV = UIImageView()
-            someIMGV.contentMode = UIViewContentMode.ScaleAspectFill
+            someIMGV.contentMode = UIViewContentMode.scaleAspectFill
             someIMGV.frame = self.bounds
             someIMGV.image = cache
             self.addSubview(someIMGV)
@@ -138,18 +138,18 @@ class EmojiDrawView:UIView {
 
 class SwiftDrawView: UIView {
     
-    private var firstTimeCache = true
-    private var path = UIBezierPath()
-    private var cache = UIImage()
+    fileprivate var firstTimeCache = true
+    fileprivate var path = UIBezierPath()
+    fileprivate var cache = UIImage()
     
-    private var pts = [CGPointZero, CGPointZero, CGPointZero, CGPointZero]
-    private var ctr: Int!
+    fileprivate var pts = [CGPoint.zero, CGPoint.zero, CGPoint.zero, CGPoint.zero]
+    fileprivate var ctr: Int!
     
     var lineWidth: CGFloat = 1.0
-    var lineColor = UIColor.blackColor()
+    var lineColor = UIColor.black
     var eraserMode = false
     
-    var undoManage:NSUndoManager!
+    var undoManage:UndoManager!
     
     
     override init(frame: CGRect) {
@@ -165,20 +165,20 @@ class SwiftDrawView: UIView {
     }
     
     func setupView() {
-        backgroundColor = UIColor.clearColor()
-        opaque = false
+        backgroundColor = UIColor.clear
+        isOpaque = false
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         print("draw rect")
 //        backgroundColor = UIColor.clearColor()
 //        opaque = false
-        cache.drawInRect(rect)
+        cache.draw(in: rect)
         path.lineWidth = lineWidth
-        path.lineCapStyle = CGLineCap.Round
+        path.lineCapStyle = CGLineCap.round
         if eraserMode {
-            UIColor.whiteColor().setStroke()
-            path.strokeWithBlendMode(CGBlendMode.Clear, alpha: 1.0)
+            UIColor.white.setStroke()
+            path.stroke(with: CGBlendMode.clear, alpha: 1.0)
         } else {
             lineColor.setStroke()
             path.stroke()
@@ -186,23 +186,23 @@ class SwiftDrawView: UIView {
     }
     
 
-    override func touchesBegan(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches:  Set<UITouch>, with event: UIEvent?) {
         print("touch")
         ctr = 0
         let touch = touches.first
-        pts[0] = touch!.locationInView(self)
+        pts[0] = touch!.location(in: self)
             
     }
     
-    override func touchesMoved(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches:  Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        let p = touch!.locationInView(self)
+        let p = touch!.location(in: self)
         ctr = ctr + 1
         pts[ctr] = p
         if  (ctr == 3) {
-            pts[2] = CGPointMake((pts[1].x + pts[3].x)/2.0, (pts[1].y + pts[3].y)/2.0);
-            path.moveToPoint(pts[0])
-            path.addQuadCurveToPoint(pts[2], controlPoint: pts[1])
+            pts[2] = CGPoint(x: (pts[1].x + pts[3].x)/2.0, y: (pts[1].y + pts[3].y)/2.0);
+            path.move(to: pts[0])
+            path.addQuadCurve(to: pts[2], controlPoint: pts[1])
             setNeedsDisplay()
             pts[0] = pts[2]
             pts[1] = pts[3]
@@ -210,22 +210,22 @@ class SwiftDrawView: UIView {
         }
     }
     
-    override func touchesEnded(touches:  Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches:  Set<UITouch>, with event: UIEvent?) {
         if (ctr == 0)
         {
             //path.addArcWithCenter(pts[0], radius: 1, startAngle: 0, endAngle: CGFloat(M_PI) * 2, clockwise: true)
             let magicNumber = lineWidth / 6
-            path = UIBezierPath(roundedRect: CGRectMake(pts[0].x, pts[0].y, magicNumber, magicNumber), cornerRadius: magicNumber / 2)
+            path = UIBezierPath(roundedRect: CGRect(x: pts[0].x, y: pts[0].y, width: magicNumber, height: magicNumber), cornerRadius: magicNumber / 2)
         }
         else if (ctr == 1)
         {
-            path.moveToPoint(pts[0])
-            path.addLineToPoint(pts[1])
+            path.move(to: pts[0])
+            path.addLine(to: pts[1])
         }
         else if (ctr == 2)
         {
-            path.moveToPoint(pts[0])
-            path.addQuadCurveToPoint(pts[2], controlPoint: pts[1])
+            path.move(to: pts[0])
+            path.addQuadCurve(to: pts[2], controlPoint: pts[1])
         }
         if !eraserMode {
             self.drawBitmap()
@@ -240,8 +240,8 @@ class SwiftDrawView: UIView {
         print("DREW")
     }
     
-    override func touchesCancelled(touches:  Set<UITouch>?, withEvent event: UIEvent?) {
-        touchesEnded(touches!, withEvent: event)
+    override func touchesCancelled(_ touches:  Set<UITouch>, with event: UIEvent?) {
+        touchesEnded(touches, with: event)
         
         print("DREW")
     }
@@ -253,27 +253,27 @@ class SwiftDrawView: UIView {
         
         lineColor.setStroke()
         path.lineWidth = lineWidth
-        path.lineCapStyle = CGLineCap.Round
+        path.lineCapStyle = CGLineCap.round
         if (firstTimeCache) {
             let rectPath = UIBezierPath(rect: bounds)
-            UIColor.clearColor().setFill()
+            UIColor.clear.setFill()
             rectPath.fill()
             firstTimeCache = false
         }
         
-        cache.drawAtPoint(CGPointZero)
+        cache.draw(at: CGPoint.zero)
         path.stroke()
         
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
     }
     
     func eraseBitmap() {
         
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
-        cache.drawAtPoint(CGPointZero)
-        path.strokeWithBlendMode(CGBlendMode.Clear, alpha: 1.0)
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache.draw(at: CGPoint.zero)
+        path.stroke(with: CGBlendMode.clear, alpha: 1.0)
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
   
     }
@@ -285,10 +285,10 @@ class SwiftDrawView: UIView {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
 
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
-        CGContextFillRect(context, self.bounds)
+        context?.setFillColor(UIColor.clear.cgColor)
+        context?.fill(self.bounds)
         
-        cache = UIGraphicsGetImageFromCurrentImageContext()
+        cache = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
         
@@ -301,7 +301,7 @@ class SwiftDrawView: UIView {
     func renderSticker() -> UIImage?{
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0.0)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
   
@@ -324,23 +324,23 @@ class SwiftDrawView: UIView {
 
 @objc protocol PaintToolViewControllerDelegate {
     
-    optional func paint_toggleEraser(state:Bool)
+    @objc optional func paint_toggleEraser(_ state:Bool)
     
-    optional func paint_setSizeUP(isPaint:Bool)
-    optional func paint_setSizeDown(isPaint:Bool)
-    optional func paint_setColor(color:UIColor)
-    optional func paint_setImage(img:UIImage)
+    @objc optional func paint_setSizeUP(_ isPaint:Bool)
+    @objc optional func paint_setSizeDown(_ isPaint:Bool)
+    @objc optional func paint_setColor(_ color:UIColor)
+    @objc optional func paint_setImage(_ img:UIImage)
     
-    optional func paint_undo()
-    optional func paint_clear()
-    optional func paint_dismiss()
+    @objc optional func paint_undo()
+    @objc optional func paint_clear()
+    @objc optional func paint_dismiss()
     
-    optional func paintSelectColor()
+    @objc optional func paintSelectColor()
     
-    optional func paint_popout()
-    optional func emoji_popOut()
+    @objc optional func paint_popout()
+    @objc optional func emoji_popOut()
     
-    optional func paintSelectImage()
+    @objc optional func paintSelectImage()
     
     
 
@@ -360,7 +360,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.view.userInteractionEnabled = true
+        self.view.isUserInteractionEnabled = true
         
     }
     
@@ -385,7 +385,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
     
     }
     
-    @IBAction func iba_changeSizeUP(sender:UIButton){
+    @IBAction func iba_changeSizeUP(_ sender:UIButton){
         
         switch sender.tag{
         case 0:
@@ -398,7 +398,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
         
     }
     
-    @IBAction func iba_changeSizeDown(sender:UIButton){
+    @IBAction func iba_changeSizeDown(_ sender:UIButton){
         
         switch sender.tag{
         case 0:
@@ -431,11 +431,11 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
 
     }
     
-    func colorSelectChoseColor(color:UIColor){
+    func colorSelectChoseColor(_ color:UIColor){
         colorSelectDismiss()
         delegate.paint_setColor?(color)
         
-        ibo_buttonPicker.setImage(nil, forState: .Normal)
+        ibo_buttonPicker.setImage(nil, for: UIControlState())
 
     
     }
@@ -456,7 +456,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
         
         return
         let stickerBored2 = UIStoryboard(name: "StickerSelectStoryboard", bundle: nil)
-        ibo_imageSelector = stickerBored2.instantiateViewControllerWithIdentifier("sb_StickerCategoryViewController") as! StickerCategoryViewController
+        ibo_imageSelector = stickerBored2.instantiateViewController(withIdentifier: "sb_StickerCategoryViewController") as! StickerCategoryViewController
         
         ibo_imageSelector.delegate = self
         ibo_imageSelector.view.frame = self.view.frame

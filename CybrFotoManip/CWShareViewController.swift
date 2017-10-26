@@ -21,9 +21,9 @@ import FBSDKCoreKit
 
 class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate{
     
-    var userImage:UIImage!
-    var uiDocController:UIDocumentInteractionController!
-    var vcparent:CWPlayViewController!
+    @objc var userImage:UIImage!
+    @objc var uiDocController:UIDocumentInteractionController!
+    @objc var vcparent:CWPlayViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -52,7 +52,7 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
         
     }
     
-    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
         
     }
     
@@ -217,10 +217,10 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
     @IBOutlet var ibo_shirtPreview:UIImageView!
     
    
-    var userImage:UIImage!
-    var uiDocController:UIDocumentInteractionController!
+    @objc var userImage:UIImage!
+    @objc var uiDocController:UIDocumentInteractionController!
     
-    let yoshirtRefURL:String = "yoshirt://design?pb=1&yscid=APPDIRECT&referring_app=CatwangFree&rid=com.99centbrains.catwang"
+    @objc let yoshirtRefURL:String = "yoshirt://design?pb=1&yscid=APPDIRECT&referring_app=CatwangFree&rid=com.99centbrains.catwang"
     
     override func viewDidLoad() {
         
@@ -245,7 +245,7 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
         navigationController?.popViewController(animated: true)
     }
     
-    func iba_newDesign(_ sender:UIBarButtonItem){
+    @objc func iba_newDesign(_ sender:UIBarButtonItem){
         
         let alertController = UIAlertController(
             title: "Create New",
@@ -397,7 +397,7 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
         
     }
     
-    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
             //Saved
     
     }

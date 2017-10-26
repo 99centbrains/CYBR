@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import SwiftInAppPurchase
 import PKHUD
 
 @objc protocol StickerSelectDelegate {
@@ -24,15 +23,15 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     @IBOutlet weak var ibo_lockBtn:UIButton!
     
-    var delegate:StickerSelectDelegate!
+    @objc var delegate:StickerSelectDelegate!
     
-    var assetArray = [[String]]()
-    var assetDIR = [String]()
-    var flowLayoutFull = UICollectionViewFlowLayout()
+    @objc var assetArray = [[String]]()
+    @objc var assetDIR = [String]()
+    @objc var flowLayoutFull = UICollectionViewFlowLayout()
     
-    var isLocked = true
-    var currentPageID:String!
-    var currentPageIndex = 0
+    @objc var isLocked = true
+    @objc var currentPageID:String!
+    @objc var currentPageIndex = 0
     
     @IBOutlet weak var ibo_scrollView: UIScrollView!
     
@@ -43,14 +42,15 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         var productIden = Set(assetDIR)
         productIden.insert("com.99cb.cybrfm.tumblr")
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        
-        iap.requestProducts(productIden) { (products, invalidIdentifiers, error) -> () in
-            print(products)
-        }
-        
-       
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+
+//        iap.requestProducts(productIden) { (products, invalidIdentifiers, error) -> () in
+//            print(products)
+//        }
+//
+
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
         
@@ -76,7 +76,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
     }
     
-    func loadDirectorys(_ packDIR:[String]){
+    @objc func loadDirectorys(_ packDIR:[String]){
         
         assetDIR = cleanDir(packDIR)
         print(assetDIR)
@@ -105,7 +105,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
     }
     
-    func setupTabBar(){
+    @objc func setupTabBar(){
         
         if self.ibo_scrollView.subviews.count > 0  {
             return
@@ -148,7 +148,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         }
     }
     
-    func iba_toggleTab(_ sender:UIButton){
+    @objc func iba_toggleTab(_ sender:UIButton){
         
         for btn in ibo_scrollView.subviews{
             
@@ -163,7 +163,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     }
     
-    func cleanDir(_ ar:[String]) -> [String]{
+    @objc func cleanDir(_ ar:[String]) -> [String]{
         
         var strings = [String]()
         
@@ -191,33 +191,34 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
+
+        //TODO: in app purchase needs to be fixed
         
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.restoreTransaction(nil) { (result) -> () in
-            switch result{
-            case .restored(let productId,let transaction,let paymentQueue) :
-                
-                print(productId)
-                UserDefaults.standard.set(true, forKey: productId)
-                PKHUD.sharedHUD.hide()
-                self.ibo_collectionView.reloadData()
-                self.showAlert("Purchases Restored!")
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.hide()
-                
-            default:
-                break
-            }
-        }
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.restoreTransaction(nil) { (result) -> () in
+//            switch result{
+//            case .restored(let productId,let transaction,let paymentQueue) :
+//
+//                print(productId)
+//                UserDefaults.standard.set(true, forKey: productId)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_collectionView.reloadData()
+//                self.showAlert("Purchases Restored!")
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.hide()
+//
+//            default:
+//                break
+//            }
+//        }
 
         
     }
     
-    func iba_done(_ sender: UIBarButtonItem){
+    @objc func iba_done(_ sender: UIBarButtonItem){
         dismiss(animated: true, completion: { () -> Void in
         })
     }
@@ -283,31 +284,32 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         PKHUD.sharedHUD.show()
         
         print(currentPageID)
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.addPayment(currentPageID, userIdentifier: nil) { (result) -> () in
-            
-            switch result{
-            case .purchased(let productId,let transaction,let paymentQueue):
-                UserDefaults.standard.set(true, forKey: productId)
-                PKHUD.sharedHUD.hide()
-                self.ibo_collectionView.reloadData()
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.show()
-                PKHUD.sharedHUD.hide()
-            default:
-                break
-            }            
-        }
-    
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.addPayment(currentPageID, userIdentifier: nil) { (result) -> () in
+//
+//            switch result{
+//            case .purchased(let productId,let transaction,let paymentQueue):
+//                UserDefaults.standard.set(true, forKey: productId)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_collectionView.reloadData()
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.show()
+//                PKHUD.sharedHUD.hide()
+//            default:
+//                break
+//            }
+//        }
+
         
         
     }
 
-    func showAlert(_ message:String){
+    @objc func showAlert(_ message:String){
         
         let alertController = UIAlertController(
             title: "Result",
@@ -344,9 +346,9 @@ class StickerCollectionCell : UICollectionViewCell {
     
     @IBOutlet var ibo_imageViewer:UIImageView!
     
-    var cellImage:UIImage!
+    @objc var cellImage:UIImage!
     
-    func setupImage(_ file:String){
+    @objc func setupImage(_ file:String){
         
         cellImage = UIImage(contentsOfFile: file)
         ibo_imageViewer.image = cellImage
@@ -361,10 +363,10 @@ class StickerCollectionCell : UICollectionViewCell {
 //EMOJIS
 class StickerCategoryViewController:UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    var delegate:StickerSelectDelegate!
+    @objc var delegate:StickerSelectDelegate!
     
     @IBOutlet var ibo_collectionView:UICollectionView!
-    var assetArray = [String]()
+    @objc var assetArray = [String]()
     
     override func viewDidLoad() {
         
@@ -405,11 +407,11 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
         ibo_collectionView.setCollectionViewLayout(flowLayoutFull, animated: false)
     }
     
-    func iba_restore(_ sender: UIBarButtonItem){
+    @objc func iba_restore(_ sender: UIBarButtonItem){
   
     }
     
-    func iba_done(_ sender: UIBarButtonItem){
+    @objc func iba_done(_ sender: UIBarButtonItem){
         dismiss(animated: true, completion: { () -> Void in
             //
         })

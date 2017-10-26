@@ -12,7 +12,7 @@ import TMTumblrSDK
 
 class TumblrFeedViewController:UIViewController {
     
-    var array_posts = [String]()
+    @objc var array_posts = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

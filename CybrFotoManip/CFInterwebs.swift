@@ -12,7 +12,6 @@ import TMTumblrSDK
 import SwiftyJSON
 import Social
 import SafariServices
-import SwiftInAppPurchase
 import PKHUD
 
 @objc protocol CFInterWebsViewControllerDelegate {
@@ -22,17 +21,17 @@ import PKHUD
 class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet weak var ibo_search:UITextField!
-    var delegate:CFInterWebsViewControllerDelegate!
+    @objc var delegate:CFInterWebsViewControllerDelegate!
     
     @IBOutlet weak var ibo_linksView:UITableView!
     
     @IBOutlet weak var ibo_lockedView:UIView!
     @IBOutlet weak var ibo_lockedBTN:UIButton!
     
-    var tumblrKey = "com.99cb.cybrfm.tumblr"
+    @objc var tumblrKey = "com.99cb.cybrfm.tumblr"
     
     
-    var hyperlinks = [String]()
+    @objc var hyperlinks = [String]()
     
     override func viewDidLoad() {
         
@@ -52,37 +51,38 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.addPayment(tumblrKey, userIdentifier: nil) { (result) -> () in
-            
-            switch result{
-            case .purchased(let productId,let transaction,let paymentQueue):
-                UserDefaults.standard.set(true, forKey: self.tumblrKey)
-                PKHUD.sharedHUD.hide()
-                self.ibo_lockedView.isHidden = true
-                self.ibo_lockedBTN.isHidden = true
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.show()
-                PKHUD.sharedHUD.hide()
-                
-            case .nothingToDo:
-                self.showAlert("Purchase Cancelled")
-            default:
-                break
-            }
-        }
-        
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.addPayment(tumblrKey, userIdentifier: nil) { (result) -> () in
+//
+//            switch result{
+//            case .purchased(let productId,let transaction,let paymentQueue):
+//                UserDefaults.standard.set(true, forKey: self.tumblrKey)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_lockedView.isHidden = true
+//                self.ibo_lockedBTN.isHidden = true
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.show()
+//                PKHUD.sharedHUD.hide()
+//
+//            case .nothingToDo:
+//                self.showAlert("Purchase Cancelled")
+//            default:
+//                break
+//            }
+//        }
+
         
            
     }
     
     
-    func showAlert(_ message:String){
+    @objc func showAlert(_ message:String){
         
         let alertController = UIAlertController(
             title: "Result",
@@ -150,7 +150,7 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
     
 
     
-    func showNextView(_ str:String){
+    @objc func showNextView(_ str:String){
         
  
         view.endEditing(true)
@@ -190,15 +190,15 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
     
     @IBOutlet weak var ibo_collectionView:UICollectionView!
     
-    var prop_url:String!
+    @objc var prop_url:String!
     
-    var prop_photos = [String]()
+    @objc var prop_photos = [String]()
     
-    var delegate:CFInterWebsViewControllerDelegate!
+    @objc var delegate:CFInterWebsViewControllerDelegate!
     
-    var offset = 0
+    @objc var offset = 0
     
-    var gettingNewData = false
+    @objc var gettingNewData = false
     var isLocked:Bool!
     
     @IBOutlet weak var ibo_lockedView:UIView!
@@ -216,7 +216,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
     
     }
     
-    func iba_done(_ sender: UIBarButtonItem){
+    @objc func iba_done(_ sender: UIBarButtonItem){
         dismiss(animated: true, completion: { () -> Void in
         })
     }
@@ -279,7 +279,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         }
     }
     
-    func loadTumblrApi(_ i:Int) {
+    @objc func loadTumblrApi(_ i:Int) {
         
         gettingNewData = true
         
@@ -311,7 +311,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
     }
     
-    func parseJsonoject(_ result:[String:AnyObject]) -> [String]{
+    @objc func parseJsonoject(_ result:[String:AnyObject]) -> [String]{
         //print(result["posts"])
         
         var array_postPhotos = [String]()
@@ -333,7 +333,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
     }
     
-    func addNewGifs(_ elements:[String]){
+    @objc func addNewGifs(_ elements:[String]){
         
         /*
          NSArray *newData = [[NSArray alloc] initWithObjects:@"otherData", nil];
@@ -378,7 +378,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
 
     }
     
-    func loadGrid(){
+    @objc func loadGrid(){
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: self.view.frame.size.width/2 - 20, height: self.view.frame.size.width/2 - 20)
@@ -453,9 +453,9 @@ class CFInterWebCollectionCell:UICollectionViewCell {
     
     @IBOutlet weak var ibo_imageView:UIImageView!
     
-    var ibo_image:UIImage!
+    @objc var ibo_image:UIImage!
 
-    func setupImage(_ url:String){
+    @objc func setupImage(_ url:String){
         print(url)
         
         self.ibo_imageView.image = nil

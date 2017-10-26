@@ -583,8 +583,8 @@
 				TargetAttributes = {
 					808D005A1B9FDB6700E020A9 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = YM28V3B39M;
-						LastSwiftMigration = 0820;
+						DevelopmentTeam = KYF5PFPW7U;
+						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -781,8 +781,8 @@
 				"${BUILT_PRODUCTS_DIR}/Kite-Print-SDK/KiteSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Spectacles/Spectacles.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftInAppPurchase/SwiftInAppPurchase.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyStoreKit/SwiftyStoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TMTumblrSDK/TMTumblrSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/TWPhotoPicker/TWPhotoPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/iNotify/iNotify.framework",
@@ -798,8 +798,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KiteSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spectacles.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftInAppPurchase.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyStoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TMTumblrSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TWPhotoPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iNotify.framework",
@@ -960,6 +960,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = KYF5PFPW7U;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CybrFotoManip/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -968,7 +969,7 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -978,6 +979,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = KYF5PFPW7U;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CybrFotoManip/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -986,7 +988,7 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

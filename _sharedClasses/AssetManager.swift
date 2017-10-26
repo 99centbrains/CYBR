@@ -12,7 +12,7 @@ import Photos
 
 class AssetManager:NSObject {
     
-    func getAssetsForDir(_ dir:String) -> [String]{
+    @objc func getAssetsForDir(_ dir:String) -> [String]{
         
         var fileListArray = [String]()
         
@@ -28,7 +28,7 @@ class AssetManager:NSObject {
     }
     
     //Adds full path to asset in array
-    func getFullAsset(_ file:String, dir:String) -> String{
+    @objc func getFullAsset(_ file:String, dir:String) -> String{
         
         var fileListArray = [String]()
         
@@ -42,7 +42,7 @@ class AssetManager:NSObject {
     }
 
 
-    func saveLocalImage(_ image:UIImage){
+    @objc func saveLocalImage(_ image:UIImage){
         
         let fileName = self.generateName()
         
@@ -72,14 +72,14 @@ class AssetManager:NSObject {
 
     }
     
-    func generateName() -> String {
+    @objc func generateName() -> String {
     
         let date = "\(Date().timeIntervalSince1970 * 1000)"
         return date
         
     }
     
-    func deleteSavedImage(_ fileName:String){
+    @objc func deleteSavedImage(_ fileName:String){
         
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let docDirectory = paths[0]
@@ -101,7 +101,7 @@ class AssetManager:NSObject {
     }
     
     
-    func getSavedImages() -> [String]?{
+    @objc func getSavedImages() -> [String]?{
         
         var images = [String]()
         
@@ -466,11 +466,11 @@ return timestamp;
 class StickerPackCollection:NSObject {
     
     var bundle_live:Bool?
-    var bundle_name:String?
-    var bundle_id:String?
-    var bundle_source:String?
-    var bundle_description:String?
-    var bundle_hero:String?
+    @objc var bundle_name:String?
+    @objc var bundle_id:String?
+    @objc var bundle_source:String?
+    @objc var bundle_description:String?
+    @objc var bundle_hero:String?
 
 }
 
@@ -478,13 +478,13 @@ class StickerPack:NSObject {
     
     var pack_live:Bool?
     var pack_free:Bool?
-    var pack_type:String?
-    var pack_dir:String?
-    var pack_id:String?
-    var pack_name:String?
-    var pack_artist:String?
+    @objc var pack_type:String?
+    @objc var pack_dir:String?
+    @objc var pack_id:String?
+    @objc var pack_name:String?
+    @objc var pack_artist:String?
     //var pack_parent:PFObject!
-    var pack_description:String?
+    @objc var pack_description:String?
     
 }
 
@@ -493,10 +493,10 @@ class AssetObject:NSObject {
     
     //var parent:PFObject!
     
-    var asset_dir:String?
-    var asset_parentID:String?
-    var asset_type:String?
-    var asset_tags:String?
+    @objc var asset_dir:String?
+    @objc var asset_parentID:String?
+    @objc var asset_type:String?
+    @objc var asset_tags:String?
     
     }
 

@@ -165,11 +165,11 @@ class FontToolViewController:UIViewController {
     
     var delegate:FontToolViewControllerDelegate!
     
-    var fontIndex = 0
+    @objc var fontIndex = 0
     
-    let fontNames = ["ArialMT", "BasicSharpie", "WithMyWoes", "MarkerTwins", "Noteworthy-Bold", "EnglishTowne-Medium", "katakanatfb", "Courier", "ROCKYAOE","Rune", "AcehDarusalam",   "Symbol", "Greek Mythology", "IllustrateIT"]
+    @objc let fontNames = ["ArialMT", "BasicSharpie", "WithMyWoes", "MarkerTwins", "Noteworthy-Bold", "EnglishTowne-Medium", "katakanatfb", "Courier", "ROCKYAOE","Rune", "AcehDarusalam",   "Symbol", "Greek Mythology", "IllustrateIT"]
     
-    var blurbs = [String]()
+    @objc var blurbs = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

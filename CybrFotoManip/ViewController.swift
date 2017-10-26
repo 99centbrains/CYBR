@@ -211,7 +211,7 @@ class HeaderCollectionCell:UICollectionReusableView {
     @IBOutlet var ibo_backgroundView:UIView!
     @IBOutlet var ibo_dailyImage:UIImageView!
     
-    func setView(){
+    @objc func setView(){
     
 //        ibo_backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
 //        
@@ -233,10 +233,10 @@ class HeaderCollectionCell:UICollectionReusableView {
 
 class UserImageCollectionCell:UICollectionViewCell {
     
-    var userImagePath:String!
+    @objc var userImagePath:String!
     @IBOutlet var ibo_imagePath:UIImageView!
     
-    func setupImage(_ path:String){
+    @objc func setupImage(_ path:String){
         
         ibo_imagePath.image = nil
         

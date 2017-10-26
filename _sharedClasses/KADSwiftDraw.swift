@@ -10,8 +10,8 @@ import UIKit
 
 class EmojiDrawView:UIView {
     
-    var image = UIImage(named: "ui_cybrsmile")
-    var someImageView = UIImageView()
+    @objc var image = UIImage(named: "ui_cybrsmile")
+    @objc var someImageView = UIImageView()
     
     var brushSize:CGFloat!
     
@@ -28,7 +28,7 @@ class EmojiDrawView:UIView {
         setupView()
     }
     
-    func clearView(){
+    @objc func clearView(){
         
         if (self.subviews.count == 0){
             return
@@ -39,13 +39,13 @@ class EmojiDrawView:UIView {
         }
     }
     
-    func setupImage(_ img:UIImage){
+    @objc func setupImage(_ img:UIImage){
         
         image = img
     
     }
     
-    func setupView() {
+    @objc func setupView() {
         brushSize = 50
         backgroundColor = UIColor.clear
         isOpaque = false
@@ -78,7 +78,7 @@ class EmojiDrawView:UIView {
        
     }
     
-    func drawBrush(_ point:CGPoint){
+    @objc func drawBrush(_ point:CGPoint){
         
         let imageView = UIImageView()
         imageView.frame = CGRect(x: 0, y: 0, width: brushSize, height: brushSize)
@@ -90,7 +90,7 @@ class EmojiDrawView:UIView {
         
     }
     
-    func drawBitmap() {
+    @objc func drawBitmap() {
         
         print("DONE \(self.frame)")
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0.0)
@@ -111,7 +111,7 @@ class EmojiDrawView:UIView {
         print("DONE \(someIMGV.frame)")
     }
     
-    func renderSticker() -> UIImage?{
+    @objc func renderSticker() -> UIImage?{
         
         var i:UIImage!
         
@@ -145,11 +145,11 @@ class SwiftDrawView: UIView {
     fileprivate var pts = [CGPoint.zero, CGPoint.zero, CGPoint.zero, CGPoint.zero]
     fileprivate var ctr: Int!
     
-    var lineWidth: CGFloat = 1.0
-    var lineColor = UIColor.black
-    var eraserMode = false
+    @objc var lineWidth: CGFloat = 1.0
+    @objc var lineColor = UIColor.black
+    @objc var eraserMode = false
     
-    var undoManage:UndoManager!
+    @objc var undoManage:UndoManager!
     
     
     override init(frame: CGRect) {
@@ -164,7 +164,7 @@ class SwiftDrawView: UIView {
         setupView()
     }
     
-    func setupView() {
+    @objc func setupView() {
         backgroundColor = UIColor.clear
         isOpaque = false
     }
@@ -246,7 +246,7 @@ class SwiftDrawView: UIView {
         print("DREW")
     }
     
-    func drawBitmap() {
+    @objc func drawBitmap() {
         
         print("Draw Bitmap")
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
@@ -268,7 +268,7 @@ class SwiftDrawView: UIView {
         UIGraphicsEndImageContext()
     }
     
-    func eraseBitmap() {
+    @objc func eraseBitmap() {
         
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
         cache.draw(at: CGPoint.zero)
@@ -278,7 +278,7 @@ class SwiftDrawView: UIView {
   
     }
     
-    func clearBitmap() {
+    @objc func clearBitmap() {
         
         print("CLEAR BITMAP")
         
@@ -298,7 +298,7 @@ class SwiftDrawView: UIView {
     }
     
     
-    func renderSticker() -> UIImage?{
+    @objc func renderSticker() -> UIImage?{
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0.0)
         self.layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -348,12 +348,12 @@ class SwiftDrawView: UIView {
 
 class PaintToolViewController:UIViewController , CWColorSelectViewControllerDelegate, StickerSelectDelegate, CFInterWebsViewControllerDelegate{
     
-    var delegate:PaintToolViewControllerDelegate!
-    var eraser:Bool = false
+    @objc var delegate:PaintToolViewControllerDelegate!
+    @objc var eraser:Bool = false
     
-    var ibo_vcColorSelect:CWColorSelectViewController!
+    @objc var ibo_vcColorSelect:CWColorSelectViewController!
     
-    var ibo_imageSelector:StickerCategoryViewController!
+    @objc var ibo_imageSelector:StickerCategoryViewController!
     
     @IBOutlet var ibo_buttonPicker:UIButton!
     
@@ -431,7 +431,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
 
     }
     
-    func colorSelectChoseColor(_ color:UIColor){
+    @objc func colorSelectChoseColor(_ color:UIColor){
         colorSelectDismiss()
         delegate.paint_setColor?(color)
         
@@ -439,7 +439,7 @@ class PaintToolViewController:UIViewController , CWColorSelectViewControllerDele
 
     
     }
-    func colorSelectDismiss(){
+    @objc func colorSelectDismiss(){
         
         ibo_vcColorSelect.view.removeFromSuperview()
         ibo_vcColorSelect.delegate = nil

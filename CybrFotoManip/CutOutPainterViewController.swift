@@ -15,7 +15,7 @@ protocol CutOutPainterDelegate {
 
 class CutOutPainter:UIViewController , UIScrollViewDelegate{
     
-    var ibo_drawingView = SwiftEraseView()
+    @objc var ibo_drawingView = SwiftEraseView()
     var delegate:CutOutPainterDelegate!
     @IBOutlet weak var ibo_scrollview:UIScrollView!
     
@@ -23,7 +23,7 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     @IBOutlet weak var ibo_erasebtn:UIButton!
     
 
-    var paintedImage:UIImage!
+    @objc var paintedImage:UIImage!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +71,7 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
     
     }
     
-    func paintSizeAnimate(_ size:CGFloat){
+    @objc func paintSizeAnimate(_ size:CGFloat){
         
        
         
@@ -170,14 +170,14 @@ class CutOutPainter:UIViewController , UIScrollViewDelegate{
 
     }
     
-    func drawingMask(_ cache:UIImage){
+    @objc func drawingMask(_ cache:UIImage){
         
         
 //self.ibo_imagePainted.image =
         //self.ibo_imagePainted.image = cache
     }
     
-    func maskImage(_ image:UIImage, mask:(UIImage))->UIImage{
+    @objc func maskImage(_ image:UIImage, mask:(UIImage))->UIImage{
         
         let imageReference = image.cgImage
         let maskReference = mask.cgImage
@@ -211,15 +211,15 @@ class SwiftEraseView: UIView {
     fileprivate var pts = [CGPoint.zero, CGPoint.zero, CGPoint.zero, CGPoint.zero]
     fileprivate var ctr: Int!
     
-    var lineWidth: CGFloat = 2.0
-    var lineColor = UIColor.black
-    var eraserMode = false
+    @objc var lineWidth: CGFloat = 2.0
+    @objc var lineColor = UIColor.black
+    @objc var eraserMode = false
     
-    var states = [UIImage]()
+    @objc var states = [UIImage]()
     
-    var vc:CutOutPainter!
+    @objc var vc:CutOutPainter!
     
-    var undoManage:UndoManager!
+    @objc var undoManage:UndoManager!
     
     
     override init(frame: CGRect) {
@@ -233,13 +233,13 @@ class SwiftEraseView: UIView {
         super.init(coder: aDecoder)
     }
     
-    func setupView() {
+    @objc func setupView() {
         backgroundColor = UIColor.clear
         isOpaque = false
     }
     
     
-    func fillBitmap(_ img:UIImage){
+    @objc func fillBitmap(_ img:UIImage){
         
         
         print("Draw Bitmap")
@@ -356,7 +356,7 @@ class SwiftEraseView: UIView {
     }
     
     
-    func imageFixBoundingBox(_ image:UIImage) -> UIImage{
+    @objc func imageFixBoundingBox(_ image:UIImage) -> UIImage{
         
         var height:CGFloat
         var width:CGFloat
@@ -389,7 +389,7 @@ class SwiftEraseView: UIView {
         
     }
     
-    func drawBitmap() {
+    @objc func drawBitmap() {
         
         print("Draw Bitmap")
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
@@ -416,7 +416,7 @@ class SwiftEraseView: UIView {
 
     }
     
-    func eraseBitmap() {
+    @objc func eraseBitmap() {
         
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
         cache.draw(at: CGPoint.zero)
@@ -428,7 +428,7 @@ class SwiftEraseView: UIView {
         
     }
     
-    func undoDraw(){
+    @objc func undoDraw(){
         
         
     
@@ -455,7 +455,7 @@ class SwiftEraseView: UIView {
         //cache.drawAtPoint(CGPointZero)
     }
     
-    func clearBitmap() {
+    @objc func clearBitmap() {
         
         print("CLEAR BITMAP")
         

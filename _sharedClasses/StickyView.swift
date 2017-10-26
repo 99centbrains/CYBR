@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class StickyView:UIView {
-    var view:UIView?
+    @objc var view:UIView?
 }
 
 public enum StickyImageType : Int {
@@ -22,15 +22,15 @@ public enum StickyImageType : Int {
 
 class StickyImageView: UIImageView {
     
-    var typeText:String?
-    var typeFont:UIFont?
-    var typeColor:UIColor?
+    @objc var typeText:String?
+    @objc var typeFont:UIFont?
+    @objc var typeColor:UIColor?
     var typeAlignment:NSTextAlignment?
     
     var stickyKind:StickyImageType!
     
     
-    var tapCallback: ((_ sticker: StickyImageView) -> ())? = nil
+    @objc var tapCallback: ((_ sticker: StickyImageView) -> ())? = nil
     
     override init(frame: CGRect) {
         
@@ -65,7 +65,7 @@ class StickyImageView: UIImageView {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "StickerTap"), object: self)
     }
     
-    func flipSticker(){
+    @objc func flipSticker(){
     
         var flippedImage:UIImage!
         

@@ -22,7 +22,7 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
     
     var delegate:CWColorSelectViewControllerDelegate!
     
-    var colorPallet = [String]()
+    @objc var colorPallet = [String]()
     @IBOutlet var ibo_collectionView:UICollectionView!
     
     @IBAction func iba_dismiss(){
@@ -105,7 +105,7 @@ class CWColorSelectViewController:UIViewController, UICollectionViewDataSource, 
 
 class ColorCellView: UICollectionViewCell {
     
-    func setColor(_ col:String){
+    @objc func setColor(_ col:String){
         
         let imageData = try? Data(contentsOf: URL(fileURLWithPath: col))
         let img = UIImage(data:imageData!)

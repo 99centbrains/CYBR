@@ -13,8 +13,8 @@ import PKHUD
 
 @objc protocol StickerSelectDelegate {
     
-    optional func stickerDidFinishChoosing(img:UIImage)
-    optional func painterDidFinishChoosing(img:UIImage)
+    @objc optional func stickerDidFinishChoosing(_ img:UIImage)
+    @objc optional func painterDidFinishChoosing(_ img:UIImage)
 
 }
 
@@ -54,10 +54,10 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
         
-        navigationController?.navigationBar.translucent = false
-        self.navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .Plain, target: self, action:#selector(self.iba_restore(_:)))
+        navigationController?.navigationBar.isTranslucent = false
+        self.navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .plain, target: self, action:#selector(self.iba_restore(_:)))
         
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(self.iba_done(_:)))
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.iba_done(_:)))
  
     }
     
@@ -65,18 +65,18 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         flowLayoutFull = UICollectionViewFlowLayout()
         flowLayoutFull.sectionInset = UIEdgeInsetsMake(20, 10, 20, 0)
-        flowLayoutFull.itemSize = CGSizeMake(self.view.frame.size.width/3 - 20, self.view.frame.size.width/3 - 20)
-        flowLayoutFull.scrollDirection = .Vertical
+        flowLayoutFull.itemSize = CGSize(width: self.view.frame.size.width/3 - 20, height: self.view.frame.size.width/3 - 20)
+        flowLayoutFull.scrollDirection = .vertical
         flowLayoutFull.minimumLineSpacing = 0
         
         
         ibo_collectionView.setCollectionViewLayout(flowLayoutFull, animated: false)
         
-        self.ibo_collectionView.setContentOffset(CGPointZero, animated: false)
+        self.ibo_collectionView.setContentOffset(CGPoint.zero, animated: false)
         
     }
     
-    func loadDirectorys(packDIR:[String]){
+    func loadDirectorys(_ packDIR:[String]){
         
         assetDIR = cleanDir(packDIR)
         print(assetDIR)
@@ -107,45 +107,45 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     func setupTabBar(){
     
-        for var i = 0; i < assetArray.count; i += 1 {
+        for i in 0 ..< assetArray.count {
             
             print(assetArray[i][0])
             
             let scrollSize = ibo_scrollView.frame.size.height
-            let btnSize = CGRectMake(CGFloat(i) * scrollSize, 0, scrollSize, scrollSize)
+            let btnSize = CGRect(x: CGFloat(i) * scrollSize, y: 0, width: scrollSize, height: scrollSize)
             let tabBtn = UIButton(frame: btnSize)
             tabBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
-            tabBtn.addTarget(self, action: #selector(self.iba_toggleTab(_:)), forControlEvents: .TouchUpInside)
+            tabBtn.addTarget(self, action: #selector(self.iba_toggleTab(_:)), for: .touchUpInside)
             tabBtn.tag = i
             tabBtn.contentScaleFactor = 0.5
             
             if i == 0 {
-                tabBtn.backgroundColor = UIColor.whiteColor()
+                tabBtn.backgroundColor = UIColor.white
             }
             
             let cellImage = UIImage(contentsOfFile: assetArray[i][0])
             
-            tabBtn.setImage(cellImage, forState: .Normal)
+            tabBtn.setImage(cellImage, for: UIControlState())
             
             self.ibo_scrollView.addSubview(tabBtn)
             
         }
         
-        ibo_scrollView.contentSize = CGSizeMake(ibo_scrollView.frame.size.height * CGFloat(assetArray.count), ibo_scrollView.frame.size.height)
+        ibo_scrollView.contentSize = CGSize(width: ibo_scrollView.frame.size.height * CGFloat(assetArray.count), height: ibo_scrollView.frame.size.height)
 //        ibo_scrollView.layer.shadowOffset = CGSizeMake(0, 2)
 //        ibo_scrollView.layer.shadowColor = UIColor.blackColor().CGColor
 //        ibo_scrollView.layer.shadowOpacity = 0.5
 //        ibo_scrollView.layer.shadowRadius = 2
     }
     
-    func iba_toggleTab(sender:UIButton){
+    func iba_toggleTab(_ sender:UIButton){
         
         for btn in ibo_scrollView.subviews{
             
-            btn.backgroundColor = UIColor.clearColor()
+            btn.backgroundColor = UIColor.clear
         }
         
-        sender.backgroundColor = UIColor.whiteColor()
+        sender.backgroundColor = UIColor.white
         print(assetDIR[sender.tag])
         currentPageIndex = sender.tag
         ibo_collectionView.reloadData()
@@ -153,13 +153,13 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     }
     
-    func cleanDir(ar:[String]) -> [String]{
+    func cleanDir(_ ar:[String]) -> [String]{
         
         var strings = [String]()
         
         for dir in ar {
-            var clean = dir.stringByReplacingOccurrencesOfString("/", withString: "")
-            clean = clean.stringByReplacingOccurrencesOfString("stickers", withString: "")
+            var clean = dir.replacingOccurrences(of: "/", with: "")
+            clean = clean.replacingOccurrences(of: "stickers", with: "")
             strings.append(clean)
         }
       
@@ -167,17 +167,17 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
          ibo_collectionView.reloadData()
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.setupTabBar()
     }
     
-    @IBAction func iba_restore(sender:UIBarButtonItem){
+    @IBAction func iba_restore(_ sender:UIBarButtonItem){
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
@@ -186,15 +186,15 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         let iap = SwiftInAppPurchase.sharedInstance
         iap.restoreTransaction(nil) { (result) -> () in
             switch result{
-            case .Restored(let productId,let transaction,let paymentQueue) :
+            case .restored(let productId,let transaction,let paymentQueue) :
                 
                 print(productId)
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: productId)
+                UserDefaults.standard.set(true, forKey: productId)
                 PKHUD.sharedHUD.hide()
                 self.ibo_collectionView.reloadData()
                 self.showAlert("Purchases Restored!")
                 paymentQueue.finishTransaction(transaction)
-            case .Failed(let error):
+            case .failed(let error):
                 print(error)
                 PKHUD.sharedHUD.contentView = PKHUDErrorView()
                 PKHUD.sharedHUD.hide()
@@ -207,36 +207,36 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
     }
     
-    func iba_done(sender: UIBarButtonItem){
-        dismissViewControllerAnimated(true, completion: { () -> Void in
+    func iba_done(_ sender: UIBarButtonItem){
+        dismiss(animated: true, completion: { () -> Void in
         })
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int{
+    func numberOfSections(in collectionView: UICollectionView) -> Int{
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return assetArray[currentPageIndex].count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
         currentPageID = assetDIR[currentPageIndex]
-        if NSUserDefaults.standardUserDefaults().boolForKey(assetDIR[currentPageIndex]) == false {
+        if UserDefaults.standard.bool(forKey: assetDIR[currentPageIndex]) == false {
             isLocked = true
-            self.ibo_lockBtn.hidden = false
+            self.ibo_lockBtn.isHidden = false
         } else {
             
             isLocked = false
-            self.ibo_lockBtn.hidden = true
+            self.ibo_lockBtn.isHidden = true
             
         }
         
     
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! StickerCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! StickerCollectionCell
         
         cell.ibo_imageViewer.image = nil
         cell.setupImage(assetArray[currentPageIndex][indexPath.item])
@@ -245,14 +245,14 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
 
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if isLocked == true {
             return
         }
         
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StickerCollectionCell
+        let cell = collectionView.cellForItem(at: indexPath) as! StickerCollectionCell
         
         if let cellimage = cell.cellImage as UIImage? {
             
@@ -275,12 +275,12 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         iap.addPayment(currentPageID, userIdentifier: nil) { (result) -> () in
             
             switch result{
-            case .Purchased(let productId,let transaction,let paymentQueue):
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: productId)
+            case .purchased(let productId,let transaction,let paymentQueue):
+                UserDefaults.standard.set(true, forKey: productId)
                 PKHUD.sharedHUD.hide()
                 self.ibo_collectionView.reloadData()
                 paymentQueue.finishTransaction(transaction)
-            case .Failed(let error):
+            case .failed(let error):
                 print(error)
                 PKHUD.sharedHUD.contentView = PKHUDErrorView()
                 PKHUD.sharedHUD.show()
@@ -294,20 +294,20 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
     }
 
-    func showAlert(message:String){
+    func showAlert(_ message:String){
         
         let alertController = UIAlertController(
             title: "Result",
             message: message,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         
         
-        alertController.addAction(UIAlertAction(title: "Done", style: .Default) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Done", style: .default) { _ in
+            alertController.dismiss(animated: true, completion: nil)
             })
         
-        self.presentViewController(alertController, animated: true) { 
+        self.present(alertController, animated: true) { 
             //
         }
         
@@ -315,7 +315,7 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
     }
 
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
 
@@ -333,7 +333,7 @@ class StickerCollectionCell : UICollectionViewCell {
     
     var cellImage:UIImage!
     
-    func setupImage(file:String){
+    func setupImage(_ file:String){
         
         cellImage = UIImage(contentsOfFile: file)
         ibo_imageViewer.image = cellImage
@@ -361,12 +361,12 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         title = "Select Sticker"
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(StickerSectionViewController.iba_done(_:)))
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(StickerSectionViewController.iba_done(_:)))
         
-        navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .Plain, target: self, action: #selector(StickerSectionViewController.iba_restore(_:)))
+        navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "Restore", style: .plain, target: self, action: #selector(StickerSectionViewController.iba_restore(_:)))
         
-        navigationController?.navigationBar.tintColor = UIColor.magentaColor()
-        navigationController?.navigationBar.backgroundColor = UIColor.yellowColor()
+        navigationController?.navigationBar.tintColor = UIColor.magenta
+        navigationController?.navigationBar.backgroundColor = UIColor.yellow
         self.title = "Stickers"
         
         let assManager = AssetManager()
@@ -385,36 +385,36 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
     override func viewWillLayoutSubviews() {
         let flowLayoutFull = UICollectionViewFlowLayout()
         flowLayoutFull.sectionInset = UIEdgeInsetsMake(5, 0, 5, 0)
-        flowLayoutFull.itemSize = CGSizeMake(self.view.frame.size.height/4, self.view.frame.size.height/4)
+        flowLayoutFull.itemSize = CGSize(width: self.view.frame.size.height/4, height: self.view.frame.size.height/4)
         flowLayoutFull.minimumInteritemSpacing = 0
         flowLayoutFull.minimumLineSpacing = 0
-        flowLayoutFull.scrollDirection = .Horizontal
+        flowLayoutFull.scrollDirection = .horizontal
         ibo_collectionView.setCollectionViewLayout(flowLayoutFull, animated: false)
     }
     
-    func iba_restore(sender: UIBarButtonItem){
+    func iba_restore(_ sender: UIBarButtonItem){
   
     }
     
-    func iba_done(sender: UIBarButtonItem){
-        dismissViewControllerAnimated(true, completion: { () -> Void in
+    func iba_done(_ sender: UIBarButtonItem){
+        dismiss(animated: true, completion: { () -> Void in
             //
         })
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int{
+    func numberOfSections(in collectionView: UICollectionView) -> Int{
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return assetArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         //print("cell")
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! StickerCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! StickerCollectionCell
         
         
         //println(imageData)
@@ -425,15 +425,15 @@ class StickerCategoryViewController:UIViewController, UICollectionViewDataSource
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StickerCollectionCell
+        let cell = collectionView.cellForItem(at: indexPath) as! StickerCollectionCell
         
         if let cellimage = cell.cellImage as UIImage? {
             
             self.delegate.stickerDidFinishChoosing?(cellimage as UIImage)
             
-            dismissViewControllerAnimated(true, completion: { () -> Void in
+            dismiss(animated: true, completion: { () -> Void in
                 
             })
             

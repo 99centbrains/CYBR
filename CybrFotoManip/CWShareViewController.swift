@@ -51,7 +51,7 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
         
     }
     
-    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
         
     }
     
@@ -59,9 +59,9 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
         
         if MFMessageComposeViewController.canSendText() == false {
             
-            let alert = UIAlertController(title: "Oops", message: "Cant send message with this device!", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Oops", message: "Cant send message with this device!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
         } else {
             
@@ -70,7 +70,7 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
             messageVC.addAttachmentData(UIImagePNGRepresentation(userImage)!, typeIdentifier: kUTTypePNG as String, filename: "catwang.png")
             messageVC.messageComposeDelegate = self;
             
-            self.presentViewController(messageVC, animated: false, completion: nil)
+            self.present(messageVC, animated: false, completion: nil)
             
         }
         
@@ -78,17 +78,17 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
     
     @IBAction func iba_facebook(){
         
-        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
             
             let fbShare:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-            fbShare.addImage(userImage)
-            self.presentViewController(fbShare, animated: true, completion: nil)
+            fbShare.add(userImage)
+            self.present(fbShare, animated: true, completion: nil)
             
         } else {
             
-            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
         }
         
@@ -96,56 +96,56 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
     
     @IBAction func iba_twitter(){
         
-        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter) {
             
             let tweetShare:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-            tweetShare.addImage(userImage)
-            self.presentViewController(tweetShare, animated: true, completion: nil)
+            tweetShare.add(userImage)
+            self.present(tweetShare, animated: true, completion: nil)
             
         } else {
             
-            let alert = UIAlertController(title: "Accounts", message: "Please login to a Twitter account to tweet.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Twitter account to tweet.", preferredStyle: UIAlertControllerStyle.alert)
             
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
         
     }
     
     @IBAction func iba_snapchat(){
         
-        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "snapchat://")!) == false{
+        if UIApplication.shared.canOpenURL(URL(string: "snapchat://")!) == false{
             
             let alertController = UIAlertController(
                 title: "Oops!",
                 message: "Looks like you dont have that app installed.",
-                preferredStyle: .Alert
+                preferredStyle: .alert
             )
             
-            alertController.addAction(UIAlertAction(title: "Die", style: .Cancel ) { _ in
-                alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+            alertController.addAction(UIAlertAction(title: "Die", style: .cancel ) { _ in
+                alertController.dismiss(animated: true, completion: { () -> Void in
                     
                 })
                 })
             
-            self.presentViewController(alertController, animated: true, completion: { () -> Void in
+            self.present(alertController, animated: true, completion: { () -> Void in
                 //
             })
             
         } else {
             
-            let pngPath = NSHomeDirectory().stringByAppendingString("/Documents/99centbrains.png")
-            UIImagePNGRepresentation(userImage)?.writeToFile(pngPath, atomically: true)
+            let pngPath = NSHomeDirectory() + "/Documents/99centbrains.png"
+            try? UIImagePNGRepresentation(userImage)?.write(to: URL(fileURLWithPath: pngPath), options: [.atomic])
             
-            let url = NSURL(fileURLWithPath: pngPath)
+            let url = URL(fileURLWithPath: pngPath)
             
-            let interactionController = UIDocumentInteractionController(URL: url)
+            let interactionController = UIDocumentInteractionController(url: url)
             interactionController.delegate = self
             
             uiDocController = interactionController;
-            let rect = CGRectMake(0 ,0 , 0, 0);
-            uiDocController.presentOpenInMenuFromRect(rect, inView: self.view, animated: true)
+            let rect = CGRect(x: 0 ,y: 0 , width: 0, height: 0);
+            uiDocController.presentOpenInMenu(from: rect, in: self.view, animated: true)
             
         }
         
@@ -155,24 +155,24 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
         
         if (TMTumblrAppClient.isTumblrInstalled()) {
             //
-            UIPasteboard.generalPasteboard().image = UIImage(data: UIImagePNGRepresentation(userImage)!)
+            UIPasteboard.general.image = UIImage(data: UIImagePNGRepresentation(userImage)!)
             let post = "tumblr://x-callback-url/photo?caption=Cybrfm&tags=cybrfm&tags=cyberart&tags=netart&tags=vaporart"
-            let url = NSURL(string: post)!
-            UIApplication.sharedApplication().openURL(url)
+            let url = URL(string: post)!
+            UIApplication.shared.openURL(url)
             
         } else {
             
-            let pngPath = NSHomeDirectory().stringByAppendingString("/Documents/99centbrains.png")
-            UIImagePNGRepresentation(userImage)?.writeToFile(pngPath, atomically: true)
+            let pngPath = NSHomeDirectory() + "/Documents/99centbrains.png"
+            try? UIImagePNGRepresentation(userImage)?.write(to: URL(fileURLWithPath: pngPath), options: [.atomic])
             
-            let url = NSURL(fileURLWithPath: pngPath)
+            let url = URL(fileURLWithPath: pngPath)
             
-            let interactionController = UIDocumentInteractionController(URL: url)
+            let interactionController = UIDocumentInteractionController(url: url)
             interactionController.delegate = self
             
             uiDocController = interactionController;
-            let rect = CGRectMake(0 ,0 , 0, 0);
-            uiDocController.presentOpenInMenuFromRect(rect, inView: self.view, animated: true)
+            let rect = CGRect(x: 0 ,y: 0 , width: 0, height: 0);
+            uiDocController.presentOpenInMenu(from: rect, in: self.view, animated: true)
             
         }
         
@@ -182,9 +182,9 @@ class CWSharePopUpViewController: UIViewController, MFMessageComposeViewControll
         
     }
     
-    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         
-        self.dismissViewControllerAnimated(true) { () -> Void in
+        self.dismiss(animated: true) { () -> Void in
             //
         }
     }
@@ -206,46 +206,46 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
     
     override func viewDidLoad() {
         
-        let titleBarLogo = UIImageView(frame: CGRectMake(0, 0, 130, 30))
-        titleBarLogo.contentMode = .ScaleAspectFit
+        let titleBarLogo = UIImageView(frame: CGRect(x: 0, y: 0, width: 130, height: 30))
+        titleBarLogo.contentMode = .scaleAspectFit
         titleBarLogo.image = UIImage(named: "ui_nav_title_share")
         navigationItem.titleView = titleBarLogo
         
-        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Back", style: .Plain, target: self, action: "iba_goback:")
-        self.navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "New", style: .Plain, target: self, action: "iba_newDesign:")
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(CWShareViewController.iba_goback(_:)))
+        self.navigationItem.leftBarButtonItem =  UIBarButtonItem(title: "New", style: .plain, target: self, action: #selector(CWShareViewController.iba_newDesign(_:)))
         
-        ibo_userImage.layer.shadowColor = UIColor.blackColor().CGColor
+        ibo_userImage.layer.shadowColor = UIColor.black.cgColor
         ibo_userImage.layer.shadowRadius = 2.0
         ibo_userImage.layer.shadowOpacity = 0.5
-        ibo_userImage.layer.shadowOffset = CGSizeMake(0,0)
+        ibo_userImage.layer.shadowOffset = CGSize(width: 0,height: 0)
         ibo_userImage.clipsToBounds = false
 
         
     }
     
-    @IBAction func iba_goback(sender:UIBarButtonItem){
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func iba_goback(_ sender:UIBarButtonItem){
+        navigationController?.popViewController(animated: true)
     }
     
-    func iba_newDesign(sender:UIBarButtonItem){
+    func iba_newDesign(_ sender:UIBarButtonItem){
         
         let alertController = UIAlertController(
             title: "Create New",
             message: "Start new with the freshness?!",
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         
-        alertController.addAction(UIAlertAction(title: "Create New", style: .Default) { _ in
-            self.navigationController?.popToRootViewControllerAnimated(true)
+        alertController.addAction(UIAlertAction(title: "Create New", style: .default) { _ in
+            self.navigationController?.popToRootViewController(animated: true)
         })
         
-        alertController.addAction(UIAlertAction(title: "No Thanks", style: .Cancel ) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        alertController.addAction(UIAlertAction(title: "No Thanks", style: .cancel ) { _ in
+            alertController.dismiss(animated: true, completion: { () -> Void in
                 //
             })
         })
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
  
     }
 
@@ -253,47 +253,47 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
         //
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         if userImage != nil {
             self.ibo_userImage.image = userImage
         }
         
     }
-    @IBAction func iba_shareOnYoshirt(sender:UIButton){
+    @IBAction func iba_shareOnYoshirt(_ sender:UIButton){
         
-        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "yoshirt://")!) == false{
+        if UIApplication.shared.canOpenURL(URL(string: "yoshirt://")!) == false{
             
             let alertController = UIAlertController(
                 title: "Print Yoshirt",
                 message: "Looks like you dont have the Yoshirt app installed. Get it for Free from the App Store!",
-                preferredStyle: .Alert
+                preferredStyle: .alert
             )
             
-            alertController.addAction(UIAlertAction(title: "Download Now", style: .Default ) { _ in
+            alertController.addAction(UIAlertAction(title: "Download Now", style: .default ) { _ in
                 
                     let storeViewer = SKStoreProductViewController()
                     storeViewer.delegate = self
                     let params = [
                         SKStoreProductParameterITunesItemIdentifier:785725887,
                         SKStoreProductParameterAffiliateToken:"10ly5p"
-                    ]
+                    ] as [String : Any]
                     
-                    storeViewer.loadProductWithParameters(params, completionBlock: { (open:Bool, error:NSError?) -> Void in
+                    storeViewer.loadProduct(withParameters: params, completionBlock: { (open:Bool, error:NSError?) -> Void in
                         if open {
-                            self.presentViewController(storeViewer, animated: true, completion: nil)
+                            self.present(storeViewer, animated: true, completion: nil)
                         }
-                    })
+                    } as! (Bool, Error?) -> Void)
                     
                 })
             
-            self.presentViewController(alertController, animated: true, completion:nil)
+            self.present(alertController, animated: true, completion:nil)
             
         } else {
             
-            UIPasteboard.generalPasteboard().image = self.userImage
-            let yoshirtURL = NSURL(string: yoshirtRefURL)
-            UIApplication.sharedApplication().openURL(yoshirtURL!)
+            UIPasteboard.general.image = self.userImage
+            let yoshirtURL = URL(string: yoshirtRefURL)
+            UIApplication.shared.openURL(yoshirtURL!)
             
         }
      
@@ -302,14 +302,14 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
     }
     
     
-    func productViewControllerDidFinish(viewController: SKStoreProductViewController) {
+    func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
         
-        viewController.dismissViewControllerAnimated(true) { () -> Void in
+        viewController.dismiss(animated: true) { () -> Void in
             
-            if UIApplication.sharedApplication().canOpenURL(NSURL(string: "yoshirt://")!){
-                UIPasteboard.generalPasteboard().image = self.userImage
-                let yoshirtURL = NSURL(string: self.yoshirtRefURL)
-                UIApplication.sharedApplication().openURL(yoshirtURL!)
+            if UIApplication.shared.canOpenURL(URL(string: "yoshirt://")!){
+                UIPasteboard.general.image = self.userImage
+                let yoshirtURL = URL(string: self.yoshirtRefURL)
+                UIApplication.shared.openURL(yoshirtURL!)
                 
             }
         }
@@ -319,13 +319,13 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
     }
     
     
-    @IBAction func iba_shareSnapchat(sender:UIButton){
+    @IBAction func iba_shareSnapchat(_ sender:UIButton){
         
         
         
     }
     
-    @IBAction func iba_shareFB(sender:UIButton){
+    @IBAction func iba_shareFB(_ sender:UIButton){
         
         
         
@@ -363,32 +363,32 @@ class CWShareViewController: UIViewController, MFMessageComposeViewControllerDel
 //        
 //    }
     
-    @IBAction func iba_shareTW(sender:UIButton){
+    @IBAction func iba_shareTW(_ sender:UIButton){
         
         
         
     }
     
-    @IBAction func iba_saveToLib(sender:UIButton){
+    @IBAction func iba_saveToLib(_ sender:UIButton){
         
        
         
     }
     
-    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
             //Saved
     
     }
     
-    @IBAction func iba_message(sender:UIButton){
+    @IBAction func iba_message(_ sender:UIButton){
     
         
         
     }
     
-    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         
-        self.dismissViewControllerAnimated(true) { () -> Void in
+        self.dismiss(animated: true) { () -> Void in
             //
         }
     }

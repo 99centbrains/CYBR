@@ -16,7 +16,7 @@ import SwiftInAppPurchase
 import PKHUD
 
 @objc protocol CFInterWebsViewControllerDelegate {
-    optional func stickerDidFinishChoosing(img:UIImage)
+    @objc optional func stickerDidFinishChoosing(_ img:UIImage)
 }
 
 class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableViewDataSource{
@@ -39,7 +39,7 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         
         let linksurl = "http://labz.99centbrains.com/cybrfm/cybr_links.plist"
-        let links = NSArray(contentsOfURL: NSURL(string:linksurl)!)
+        let links = NSArray(contentsOf: URL(string:linksurl)!)
         if links == nil {
             hyperlinks = ["cybrfm.99centbrains", "blog.99centbrains.com"]
         } else {
@@ -57,20 +57,20 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         iap.addPayment(tumblrKey, userIdentifier: nil) { (result) -> () in
             
             switch result{
-            case .Purchased(let productId,let transaction,let paymentQueue):
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: self.tumblrKey)
+            case .purchased(let productId,let transaction,let paymentQueue):
+                UserDefaults.standard.set(true, forKey: self.tumblrKey)
                 PKHUD.sharedHUD.hide()
-                self.ibo_lockedView.hidden = true
-                self.ibo_lockedBTN.hidden = true
+                self.ibo_lockedView.isHidden = true
+                self.ibo_lockedBTN.isHidden = true
                 paymentQueue.finishTransaction(transaction)
-            case .Failed(let error):
+            case .failed(let error):
                 print(error)
                 
                 PKHUD.sharedHUD.contentView = PKHUDErrorView()
                 PKHUD.sharedHUD.show()
                 PKHUD.sharedHUD.hide()
                 
-            case .NothingToDo:
+            case .nothingToDo:
                 self.showAlert("Purchase Cancelled")
             default:
                 break
@@ -82,20 +82,20 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    func showAlert(message:String){
+    func showAlert(_ message:String){
         
         let alertController = UIAlertController(
             title: "Result",
             message: message,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         
         
-        alertController.addAction(UIAlertAction(title: "Done", style: .Default) { _ in
-            alertController.dismissViewControllerAnimated(true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Done", style: .default) { _ in
+            alertController.dismiss(animated: true, completion: nil)
             })
         
-        self.presentViewController(alertController, animated: true) {
+        self.present(alertController, animated: true) {
             //
         }
         
@@ -109,8 +109,8 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
             return
         }
     
-        let url = ibo_search.text?.stringByAppendingString(".tumblr.com")
-        self.showNextView(url!)
+        let url = (ibo_search.text?)! + ".tumblr.com"
+        self.showNextView(url)
         
         view.endEditing(true)
     }
@@ -121,20 +121,20 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         let string = "@99centbrains please add my #Tumblr on the #cybrFM app!"
         
         let vc = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-        vc.setInitialText(string)
+        vc?.setInitialText(string)
         
-        presentViewController(vc, animated: true, completion: nil)
+        present(vc!, animated: true, completion: nil)
         
     }
 
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return hyperlinks.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableLinkCell", forIndexPath: indexPath) as! TableLinkCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableLinkCell", for: indexPath) as! TableLinkCell
         
         cell.ibo_label.text = hyperlinks[indexPath.row]
         
@@ -142,24 +142,24 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TableLinkCell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! TableLinkCell
         
          self.showNextView(cell.ibo_label.text!)
     }
     
 
     
-    func showNextView(str:String){
+    func showNextView(_ str:String){
         
  
         view.endEditing(true)
         
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("sb_CFInterWebsGridViewController") as! CFInterWebsGridViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sb_CFInterWebsGridViewController") as! CFInterWebsGridViewController
         print(str)
         vc.prop_url = str
         vc.loadGrid()
-        vc.isLocked = NSUserDefaults.standardUserDefaults().boolForKey(self.tumblrKey)
+        vc.isLocked = UserDefaults.standard.bool(forKey: self.tumblrKey)
         vc.delegate = self.delegate
         self.navigationController?.pushViewController(vc, animated: true)
 
@@ -168,17 +168,17 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
       
         super.viewWillAppear(animated)
         
-        let isLocked = NSUserDefaults.standardUserDefaults().boolForKey(self.tumblrKey)
-        ibo_lockedView.hidden = isLocked
-        ibo_lockedBTN.hidden = isLocked
+        let isLocked = UserDefaults.standard.bool(forKey: self.tumblrKey)
+        ibo_lockedView.isHidden = isLocked
+        ibo_lockedBTN.isHidden = isLocked
     }
 }
 
@@ -211,13 +211,13 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
         
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(self.iba_done(_:)))
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.iba_done(_:)))
 
     
     }
     
-    func iba_done(sender: UIBarButtonItem){
-        dismissViewControllerAnimated(true, completion: { () -> Void in
+    func iba_done(_ sender: UIBarButtonItem){
+        dismiss(animated: true, completion: { () -> Void in
         })
     }
     
@@ -238,15 +238,15 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        ibo_lockedView.hidden = isLocked
+        ibo_lockedView.isHidden = isLocked
         
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         
@@ -265,23 +265,23 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
     
     @IBAction func visitTumblr(){
         
-        if prop_url.containsString(".tumblr.com") {
+        if prop_url.contains(".tumblr.com") {
         
-        TMTumblrAppClient.viewBlog(prop_url.stringByReplacingOccurrencesOfString(".tumblr.com", withString: ""))
+        TMTumblrAppClient.viewBlog(prop_url.replacingOccurrences(of: ".tumblr.com", with: ""))
             
         } else {
             
-            let safari = SFSafariViewController(URL: NSURL(string:"http://".stringByAppendingString(prop_url))!)
-            self.presentViewController(safari, animated: true, completion: nil)
+            let safari = SFSafariViewController(url: URL(string:"http://" + prop_url)!)
+            self.present(safari, animated: true, completion: nil)
             
         }
     }
     
-    func loadTumblrApi(i:Int) {
+    func loadTumblrApi(_ i:Int) {
         
         gettingNewData = true
         
-        TMAPIClient.sharedInstance().OAuthConsumerKey = "c5GyLE1sxb1h7DIcAQu3Dum6ALeZGMssHuaL2XWv0es5Ayhh6S"
+        TMAPIClient.sharedInstance().oAuthConsumerKey = "c5GyLE1sxb1h7DIcAQu3Dum6ALeZGMssHuaL2XWv0es5Ayhh6S"
         TMAPIClient.sharedInstance().posts(prop_url, type: "photo", parameters:
         ["limit" : 50, "offset" : i * 50, "filter" : "raw"]) { (result:AnyObject!, error:NSError!) -> Void in
             
@@ -293,19 +293,19 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
                 return
             }
             
-            let alert = UIAlertController(title: "Oops", message: "\(error)", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Oops", message: "\(error)", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "OK", style: .Default) { _ in
-                self.navigationController?.popViewControllerAnimated(true)
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
                 })
             
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
+            self.present(alert, animated: true, completion: nil)
+        } as! TMAPICallback as! TMAPICallback as! TMAPICallback as! TMAPICallback as! TMAPICallback as! TMAPICallback as! TMAPICallback
 
         
     }
     
-    func parseJsonoject(result:[String:AnyObject]) -> [String]{
+    func parseJsonoject(_ result:[String:AnyObject]) -> [String]{
         //print(result["posts"])
         
         var array_postPhotos = [String]()
@@ -327,7 +327,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
     }
     
-    func addNewGifs(elements:[String]){
+    func addNewGifs(_ elements:[String]){
         
         /*
          NSArray *newData = [[NSArray alloc] initWithObjects:@"otherData", nil];
@@ -351,13 +351,13 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
         self.ibo_collectionView.performBatchUpdates({
             let oldCount = self.prop_photos.count
-            self.prop_photos.appendContentsOf(elements)
-            var indexPaths = [NSIndexPath]()
+            self.prop_photos.append(contentsOf: elements)
+            var indexPaths = [IndexPath]()
             
                 for i in oldCount ..< self.prop_photos.count{
-                    indexPaths.append(NSIndexPath(forRow: i, inSection: 0))
+                    indexPaths.append(IndexPath(row: i, section: 0))
                 }
-            self.ibo_collectionView.insertItemsAtIndexPaths(indexPaths)
+            self.ibo_collectionView.insertItems(at: indexPaths)
             
             //
             }, completion: nil)
@@ -375,7 +375,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
     func loadGrid(){
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSizeMake(self.view.frame.size.width/2 - 20, self.view.frame.size.width/2 - 20)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/2 - 20, height: self.view.frame.size.width/2 - 20)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         self.ibo_collectionView.setCollectionViewLayout(layout, animated: false)
@@ -385,7 +385,7 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
     }
     
     //SCROLLVIEW
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if (gettingNewData){
             return
@@ -415,28 +415,28 @@ class CFInterWebsGridViewController:UIViewController, UICollectionViewDelegate, 
         
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int{
+    func numberOfSections(in collectionView: UICollectionView) -> Int{
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return prop_photos.count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CFInterWebCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CFInterWebCollectionCell
         cell.setupImage(prop_photos[indexPath.item])
         return cell
         
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CFInterWebCollectionCell
+        let cell = collectionView.cellForItem(at: indexPath) as! CFInterWebCollectionCell
         
         self.delegate.stickerDidFinishChoosing!(cell.ibo_image)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     
     }
     
@@ -449,15 +449,15 @@ class CFInterWebCollectionCell:UICollectionViewCell {
     
     var ibo_image:UIImage!
 
-    func setupImage(url:String){
+    func setupImage(_ url:String){
         print(url)
         
         self.ibo_imageView.image = nil
        
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+        let priority = DispatchQueue.GlobalQueuePriority.default
+        DispatchQueue.global(priority: priority).async {
             // do some task
-            let data = NSData(contentsOfURL: NSURL(string:url)!)
+            let data = try? Data(contentsOf: URL(string:url)!)
             if data == nil {
                 return
             }
@@ -465,7 +465,7 @@ class CFInterWebCollectionCell:UICollectionViewCell {
             
             self.ibo_image = image
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 // update some UI
                   self.ibo_imageView.image = image
             }

@@ -574,7 +574,8 @@
 				TargetAttributes = {
 					808D005A1B9FDB6700E020A9 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = YM28V3B39M;
+						DevelopmentTeam = KYF5PFPW7U;
+						LastSwiftMigration = 0830;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -915,6 +916,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = KYF5PFPW7U;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CybrFotoManip/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -923,6 +925,7 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -932,6 +935,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = KYF5PFPW7U;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CybrFotoManip/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -940,6 +944,7 @@
 				PRODUCT_NAME = CybrFotoManip;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CybrFotoManip-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

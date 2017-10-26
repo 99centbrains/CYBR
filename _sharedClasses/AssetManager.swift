@@ -13,15 +13,15 @@ import TAPromotee
 
 class AssetManager:NSObject {
     
-    func getAssetsForDir(dir:String) -> [String]{
+    func getAssetsForDir(_ dir:String) -> [String]{
         
         var fileListArray = [String]()
         
-        var error:NSError?
-        let resourcePath = NSBundle.mainBundle().resourcePath
-        let fileMGR = NSFileManager.defaultManager()
+        let error:NSError?
+        let resourcePath = Bundle.main.resourcePath
+        let fileMGR = FileManager.default
                 
-        let fileList = (try! fileMGR.contentsOfDirectoryAtPath("\(resourcePath! + dir)")) 
+        let fileList = (try! fileMGR.contentsOfDirectory(atPath: "\(resourcePath! + dir)")) 
         
         if ((error) != nil){
             print("\(error?.localizedDescription)")
@@ -33,11 +33,11 @@ class AssetManager:NSObject {
     }
     
     //Adds full path to asset in array
-    func getFullAsset(file:String, dir:String) -> String{
+    func getFullAsset(_ file:String, dir:String) -> String{
         
         var fileListArray = [String]()
         
-        let resourcePath = NSBundle.mainBundle().resourcePath
+        let resourcePath = Bundle.main.resourcePath
         
         let newName = "\(resourcePath! + dir + file)"
         
@@ -47,27 +47,27 @@ class AssetManager:NSObject {
     }
 
 
-    func saveLocalImage(image:UIImage){
+    func saveLocalImage(_ image:UIImage){
         
         let fileName = self.generateName()
         
         print("save \(fileName)")
         
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let docDirectory = paths[0]
         
-        let saveDIR = docDirectory.stringByAppendingString("/Save/")
+        let saveDIR = docDirectory + "/Save/"
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         
         do {
             
-            try fileManager.createDirectoryAtPath(saveDIR, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: saveDIR, withIntermediateDirectories: true, attributes: nil)
             
-            let filepath = saveDIR.stringByAppendingString(fileName)
+            let filepath = saveDIR + fileName
             let pngdata = UIImagePNGRepresentation(image)
             
-            pngdata?.writeToFile(filepath, atomically: true)
+            try? pngdata?.write(to: URL(fileURLWithPath: filepath), options: [.atomic])
             
         } catch let error as NSError {
                 print(error)
@@ -79,24 +79,24 @@ class AssetManager:NSObject {
     
     func generateName() -> String {
     
-        let date = "\(NSDate().timeIntervalSince1970 * 1000)"
+        let date = "\(Date().timeIntervalSince1970 * 1000)"
         return date
         
     }
     
-    func deleteSavedImage(fileName:String){
+    func deleteSavedImage(_ fileName:String){
         
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let docDirectory = paths[0]
         
-        let saveDIR = docDirectory.stringByAppendingString("/Save/")
+        let saveDIR = docDirectory + "/Save/"
         
-        let fileManager = NSFileManager.defaultManager()
-        let filePath = saveDIR.stringByAppendingString(fileName)
+        let fileManager = FileManager.default
+        let filePath = saveDIR + fileName
         
         do {
             
-            try fileManager.removeItemAtPath(filePath)
+            try fileManager.removeItem(atPath: filePath)
             
         } catch let error as NSError {
             print(error)
@@ -110,20 +110,20 @@ class AssetManager:NSObject {
         
         var images = [String]()
         
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let docDirectory = paths[0]
-        let saveDIR = docDirectory.stringByAppendingString("/Save/")
+        let saveDIR = docDirectory + "/Save/"
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
     
 
         do {
             
-            let files = try fileManager.contentsOfDirectoryAtPath(saveDIR)
+            let files = try fileManager.contentsOfDirectory(atPath: saveDIR)
             print(saveDIR)
             
             for file in files {
-                images.append(saveDIR.stringByAppendingString(file))
+                images.append(saveDIR + file)
             }
             
             return images
@@ -133,7 +133,7 @@ class AssetManager:NSObject {
             
             do {
                 
-                try NSFileManager.defaultManager().createDirectoryAtPath(saveDIR, withIntermediateDirectories: false, attributes: nil)
+                try FileManager.default.createDirectory(atPath: saveDIR, withIntermediateDirectories: false, attributes: nil)
                 print("Create DiR")
             
             } catch let error as NSError {
@@ -519,18 +519,18 @@ struct kAlbum {
 class PhotoSaver {
     
     
-    func saveAssetToAlbum(img:UIImage, completion:()->Void){
+    func saveAssetToAlbum(_ img:UIImage, completion:@escaping ()->Void){
         
         //BLOCK TO MAKE ALBUM IF HASNT BEEN MADE
         self.checkAlbumMakeAlbum { () -> Void in
             
-            PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+            PHPhotoLibrary.shared().performChanges({
                 let collection = self.getCustomAlbum()
                 
-                let assetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(img)
+                let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: img)
                 let placeholder = assetRequest.placeholderForCreatedAsset
-                let video = PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
-                let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.getCustomAlbum()!, assets: video)
+                let video = PHAsset.fetchAssets(in: collection!, options: nil)
+                let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.getCustomAlbum()!, assets: video)
                 albumChangeRequest!.addAssets([placeholder!])
                 
                 }, completionHandler: { success, error in
@@ -546,18 +546,18 @@ class PhotoSaver {
         
     }
     
-    func checkAlbumMakeAlbum(complete:() -> Void){
+    func checkAlbumMakeAlbum(_ complete:@escaping () -> Void){
         
         if self.getCustomAlbum() == nil {
             
-            PHPhotoLibrary.sharedPhotoLibrary().performChanges({ () -> Void in
+            PHPhotoLibrary.shared().performChanges({ () -> Void in
                 
-                PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle(kAlbum.albumName)
+                PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: kAlbum.albumName)
                 
             }) { (done:Bool, err:NSError?) -> Void in
                 
                 complete()
-            }
+            } as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void as! (Bool, Error?) -> Void
             
         } else {
             complete()
@@ -567,7 +567,7 @@ class PhotoSaver {
     
     func getCustomAlbum() -> PHAssetCollection?{
         
-        let assetCollections = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumRegular, options: nil)
+        let assetCollections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
         for i in 0  ..< assetCollections.count  {
             
             let assetCollection = assetCollections[i] as? PHAssetCollection
@@ -587,20 +587,20 @@ class PhotoSaver {
 class DocumentManager {
     
     
-    func clearDirectory(dir:String){
+    func clearDirectory(_ dir:String){
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         let fullDiretory = self.getDocumentsDirectory(dir)
         
         do {
             
-            let files = try fileManager.contentsOfDirectoryAtPath(fullDiretory as String)
+            let files = try fileManager.contentsOfDirectory(atPath: fullDiretory as String)
             
             for f in files {
                 let fullasset = self.getFullAssetName(dir, file: f)
                 print(fullasset)
                 do {
-                    try fileManager.removeItemAtPath(fullasset)
+                    try fileManager.removeItem(atPath: fullasset)
                 }
             }
   
@@ -610,14 +610,14 @@ class DocumentManager {
         
     }
     
-    func saveImage(image:UIImage, directory:String){
+    func saveImage(_ image:UIImage, directory:String){
         
         checkDocFolder(directory)
         
         if let data = UIImagePNGRepresentation(image) {
             
-            let filename = getDocumentsDirectory(directory).stringByAppendingPathComponent("\(generateName()).png")
-            data.writeToFile(filename, atomically: true)
+            let filename = getDocumentsDirectory(directory).appendingPathComponent("\(generateName()).png")
+            try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])
             
             print("saved")
             
@@ -625,23 +625,23 @@ class DocumentManager {
     }
     
     
-    func getDocumentsDirectory(dir:String) -> NSString {
+    func getDocumentsDirectory(_ dir:String) -> NSString {
         
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let documentsDirectory = paths[0].stringByAppendingString("/\(dir)")
-        return documentsDirectory
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0] + "/\(dir)"
+        return documentsDirectory as NSString
         
     }
     
-    func checkDocFolder(dir:String){
+    func checkDocFolder(_ dir:String){
         
-        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        let documentsDirectory: AnyObject = paths[0]
-        let dataPath = documentsDirectory.stringByAppendingPathComponent(dir)
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documentsDirectory: AnyObject = paths[0] as AnyObject
+        let dataPath = documentsDirectory.appendingPathComponent(dir)
         
         print(dataPath)
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+            try FileManager.default.createDirectory(atPath: dataPath, withIntermediateDirectories: false, attributes: nil)
         } catch let error as NSError {
             print(error.localizedDescription);
         }
@@ -649,26 +649,26 @@ class DocumentManager {
     }
     
     func generateName() -> String{
-         return  "\(NSDate().timeIntervalSince1970 * 1000)"
+         return  "\(Date().timeIntervalSince1970 * 1000)"
     }
     
     
-    func getFullAssetName(dir:String, file:String) -> String {
+    func getFullAssetName(_ dir:String, file:String) -> String {
         
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let documentsDirectory = paths[0].stringByAppendingString("/\(dir)")
-        return documentsDirectory.stringByAppendingString("/\(file)")
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0] + "/\(dir)"
+        return documentsDirectory + "/\(file)"
     }
     
-    func getSavedImages(dir:String) -> [String]{
+    func getSavedImages(_ dir:String) -> [String]{
         
         self.checkDocFolder(dir)
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         
         do {
             
-            let files = try fileManager.contentsOfDirectoryAtPath(self.getDocumentsDirectory(dir) as String)
+            let files = try fileManager.contentsOfDirectory(atPath: self.getDocumentsDirectory(dir) as String)
             
             return files
    
@@ -687,18 +687,18 @@ class CrossPromoManager {
     
     
     
-    func retrievePromoIDS(vc:UIViewController){
+    func retrievePromoIDS(_ vc:UIViewController){
         
         
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = NSDateFormatterStyle.ShortStyle
-        formatter.timeStyle = .NoStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = DateFormatter.Style.short
+        formatter.timeStyle = .none
         
-        let dateString = formatter.stringFromDate(NSDate())
+        let dateString = formatter.string(from: Date())
         print(dateString)
         
         let linksurl = "http://labz.99centbrains.com/cybrfm/cybr_popups.plist"
-        let links = NSArray(contentsOfURL: NSURL(string:linksurl)!)
+        let links = NSArray(contentsOf: URL(string:linksurl)!)
         
         
         
@@ -708,7 +708,7 @@ class CrossPromoManager {
             let date = link["date"] as! String
             
            
-            let daysBetweenNowAndPromoDate = NSDate().timeIntervalSinceDate(formatter.dateFromString(date)!) / -86400.0
+            let daysBetweenNowAndPromoDate = Date().timeIntervalSince(formatter.date(from: date)!) / -86400.0
             
             if (daysBetweenNowAndPromoDate < 0){
                 return
@@ -720,7 +720,7 @@ class CrossPromoManager {
             
             //print(l)
             
-            if NSUserDefaults.standardUserDefaults().boolForKey("\(promoID)\(date)") == false {
+            if UserDefaults.standard.bool(forKey: "\(promoID)\(date)") == false {
     
     
                 self.showPromoId(date, id:Int(promoID)!, message: message, inVC: vc)
@@ -736,21 +736,21 @@ class CrossPromoManager {
     
     }
     
-    func showPromoId(date:String, id:Int, message:String, inVC:UIViewController){
+    func showPromoId(_ date:String, id:Int, message:String, inVC:UIViewController){
         
         
         
-            TAPromotee.showFromViewController(inVC, appId: id, caption: message) { (action:TAPromoteeUserAction) in
+            TAPromotee.show(from: inVC, appId: id, caption: message) { (action:TAPromoteeUserAction) in
                 
                 print(action)
                 
-                if action == TAPromoteeUserAction.DidClose {
+                if action == TAPromoteeUserAction.didClose {
                     print("DID CLOSE")
                     
-                } else if action == TAPromoteeUserAction.DidInstall {
+                } else if action == TAPromoteeUserAction.didInstall {
                     
                     print("DID INSTALL")
-                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: "\(id)\(date)")
+                    UserDefaults.standard.set(true, forKey: "\(id)\(date)")
                     
                 }
             }

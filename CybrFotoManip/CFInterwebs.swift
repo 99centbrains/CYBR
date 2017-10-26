@@ -12,7 +12,6 @@ import TMTumblrSDK
 import SwiftyJSON
 import Social
 import SafariServices
-import SwiftInAppPurchase
 import PKHUD
 
 @objc protocol CFInterWebsViewControllerDelegate {
@@ -52,31 +51,32 @@ class CFInterWebsViewController:UIViewController, UITableViewDelegate, UITableVi
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.addPayment(tumblrKey, userIdentifier: nil) { (result) -> () in
-            
-            switch result{
-            case .purchased(let productId,let transaction,let paymentQueue):
-                UserDefaults.standard.set(true, forKey: self.tumblrKey)
-                PKHUD.sharedHUD.hide()
-                self.ibo_lockedView.isHidden = true
-                self.ibo_lockedBTN.isHidden = true
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.show()
-                PKHUD.sharedHUD.hide()
-                
-            case .nothingToDo:
-                self.showAlert("Purchase Cancelled")
-            default:
-                break
-            }
-        }
-        
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.addPayment(tumblrKey, userIdentifier: nil) { (result) -> () in
+//
+//            switch result{
+//            case .purchased(let productId,let transaction,let paymentQueue):
+//                UserDefaults.standard.set(true, forKey: self.tumblrKey)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_lockedView.isHidden = true
+//                self.ibo_lockedBTN.isHidden = true
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.show()
+//                PKHUD.sharedHUD.hide()
+//
+//            case .nothingToDo:
+//                self.showAlert("Purchase Cancelled")
+//            default:
+//                break
+//            }
+//        }
+
         
            
     }

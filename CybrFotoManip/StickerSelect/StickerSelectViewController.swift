@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import SwiftInAppPurchase
 import PKHUD
 
 @objc protocol StickerSelectDelegate {
@@ -43,14 +42,15 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         var productIden = Set(assetDIR)
         productIden.insert("com.99cb.cybrfm.tumblr")
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        
-        iap.requestProducts(productIden) { (products, invalidIdentifiers, error) -> () in
-            print(products)
-        }
-        
-       
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+
+//        iap.requestProducts(productIden) { (products, invalidIdentifiers, error) -> () in
+//            print(products)
+//        }
+//
+
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "ui_cropview_checkers")!)
         
@@ -191,28 +191,29 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
+
+        //TODO: in app purchase needs to be fixed
         
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.restoreTransaction(nil) { (result) -> () in
-            switch result{
-            case .restored(let productId,let transaction,let paymentQueue) :
-                
-                print(productId)
-                UserDefaults.standard.set(true, forKey: productId)
-                PKHUD.sharedHUD.hide()
-                self.ibo_collectionView.reloadData()
-                self.showAlert("Purchases Restored!")
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.hide()
-                
-            default:
-                break
-            }
-        }
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.restoreTransaction(nil) { (result) -> () in
+//            switch result{
+//            case .restored(let productId,let transaction,let paymentQueue) :
+//
+//                print(productId)
+//                UserDefaults.standard.set(true, forKey: productId)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_collectionView.reloadData()
+//                self.showAlert("Purchases Restored!")
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.hide()
+//
+//            default:
+//                break
+//            }
+//        }
 
         
     }
@@ -283,26 +284,27 @@ class StickerSectionViewController:UIViewController, UICollectionViewDelegate, U
         PKHUD.sharedHUD.show()
         
         print(currentPageID)
-        
-        let iap = SwiftInAppPurchase.sharedInstance
-        iap.addPayment(currentPageID, userIdentifier: nil) { (result) -> () in
-            
-            switch result{
-            case .purchased(let productId,let transaction,let paymentQueue):
-                UserDefaults.standard.set(true, forKey: productId)
-                PKHUD.sharedHUD.hide()
-                self.ibo_collectionView.reloadData()
-                paymentQueue.finishTransaction(transaction)
-            case .failed(let error):
-                print(error)
-                PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                PKHUD.sharedHUD.show()
-                PKHUD.sharedHUD.hide()
-            default:
-                break
-            }            
-        }
-    
+
+        //TODO: in app purchase needs to be fixed
+//        let iap = SwiftInAppPurchase.sharedInstance
+//        iap.addPayment(currentPageID, userIdentifier: nil) { (result) -> () in
+//
+//            switch result{
+//            case .purchased(let productId,let transaction,let paymentQueue):
+//                UserDefaults.standard.set(true, forKey: productId)
+//                PKHUD.sharedHUD.hide()
+//                self.ibo_collectionView.reloadData()
+//                paymentQueue.finishTransaction(transaction)
+//            case .failed(let error):
+//                print(error)
+//                PKHUD.sharedHUD.contentView = PKHUDErrorView()
+//                PKHUD.sharedHUD.show()
+//                PKHUD.sharedHUD.hide()
+//            default:
+//                break
+//            }
+//        }
+
         
         
     }

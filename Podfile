@@ -12,7 +12,7 @@ target 'CybrFotoManip' do
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
-    pod 'TMTumblrSDK'
+    pod 'TMTumblrSDK', '4.0.4'
 	pod 'Kite-Print-SDK'
 	pod 'PayPal-iOS-SDK/Core', '~> 2.12.5'
 
